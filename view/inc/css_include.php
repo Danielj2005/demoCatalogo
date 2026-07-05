@@ -1,6 +1,6 @@
 
 <!-- Favicons -->
-<link href="./img/logo.jpeg" rel="shortcut icon" type="image/x-icon">
+<link href="<?= './img/'. LOGO ?>" rel="shortcut icon" type="image/x-icon">
 
 <!-- sweet-alert 2 -->
 <link href="./css/sweetalert2.min.css" rel="stylesheet">

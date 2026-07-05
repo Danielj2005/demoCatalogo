@@ -3,11 +3,11 @@
 	/*----------  
 	Ruta o dominio del servidor
 	----------*/
-	const SERVERURL="http://localhost/danikatshop/";
+	const SERVERURL="http://localhost/demoCatalogo/";
 	/*----------  
 	Nombre de la empresa o compañia
 	----------*/
-	const COMPANY="DanikatShop";
+	const COMPANY="demoCatalogo";
 	const SLOGAN="Todo lo que buscas en un solo lugar";
 
 	/*----------  Idioma - Language
@@ -24,12 +24,12 @@
 	/*----------  Redes sociales  ----------*/
 	const FACEBOOK="";
 	const INSTAGRAM="";
-	const WHATSAPP="DANIKATSHOP";
+	const WHATSAPP="demoCatalogo";
 
 
 	/*----------  Direccion  ----------*/
 	const COUNTRY="Venezuela";
-	const ADDRESS="Tinaquillo, Estado Cajedes, Venezuela.";
+	const ADDRESS=" ";
 
 
 	/*----------  Marcador de campos obligatorios  ----------*/

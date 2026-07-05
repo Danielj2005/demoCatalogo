@@ -13,7 +13,7 @@ $per_page = isset($_POST['per_page']) ? max(1, intval($_POST['per_page'])) : 16;
 $offset = ($page - 1) * $per_page;
 
 $catalogo = mysqli_fetch_all(modeloPrincipal::consultar("SELECT id, nombre, precio, images FROM productos WHERE state = 1 ORDER BY nombre ASC LIMIT $per_page OFFSET $offset")); 
-$PHONE = "04244189963";
+
 
 $filters = $data['filter'] ?? null;
 
@@ -45,7 +45,7 @@ if ($end - $start < $maxButtons - 1) {
 
 ?>
 
-<!DOCTYPE html>
+<!DOCTYPE html >
 <html lang="en">
 
 <head>
@@ -128,7 +128,7 @@ if ($end - $start < $maxButtons - 1) {
                                                 </button> 
                                             </div>
                                             <div class="col-6 mb-2 text-center">
-                                                <button onclick="askWhatsApp('<?= $nombre ?>', <?= $precio ?>, <?= $PHONE ?>)" 
+                                                <button onclick="askWhatsApp('<?= $nombre ?>', <?= $precio ?>, <?= PHONE ?>)" 
                                                     type="submit" class="btn btn-success rounded-5">
                                                         <i class="bi bi-whatsapp"></i>
                                                         <span class="small d-non">WhatsApp</span>

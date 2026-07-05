@@ -154,11 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (document.getElementById('loader')) {
         setTimeout(() => {
-            document.getElementById('loader').style.display = 'none';
+            document.getElementById('loader').setAttribute('style', 'display: none !important');
             if (document.getElementById('app')) {
                 document.getElementById('app').style.display = 'block';
             }
         }, 1500);
     }
-    getCatalogo()
 });

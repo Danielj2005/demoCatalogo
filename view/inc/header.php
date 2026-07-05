@@ -1,9 +1,9 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
 
-  <div class="d-flex align-items-center justify-content-between">
+  <div class="d-flex align-items-center justify-content-around">
     <a href="./" class="logo d-flex align-items-center">
-      <img src="img/logo.jpeg" alt="">
-      <span class="d-none d-lg-block">DaniKat Shop</span>
+      <img src="img/<?= LOGO ?>" alt="">
+      <span class="d-none d-lg-block"><?= COMPANY ?></span>
     </a>
     <i class="bi bi-list toggle-sidebar-btn"></i>
     <?php //if ($_SESSION['dataUsuario']["primer_inicio"] == '0') { ?>
@@ -11,26 +11,13 @@
 
   </div>
 
-  
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Buscar tortas, arreglos, manualidades..." title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div> 
 
-  <?php
-    // $id_usuario = $_SESSION['id_usuario'];
-    
-    // $precio_dolar_actual = modeloPrincipal::obtener_precio_dolar();
-
-    // $_SESSION['dolar'] = $precio_dolar_actual;
-
-    // $tiempo_config = modeloPrincipal::obtener_tiempo_inactividad();
-
-    // echo '<script type="text/javascript"> const tiempo_config = '.$tiempo_config.' * 60 * 1000</script>';
-
-  ?>
+  <div class="search-bar">
+    <form class="search-form d-flex align-items-center" method="POST" action="#">
+      <input type="text" name="query" placeholder="Buscar productos..." title="Enter search keyword">
+      <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+    </form>
+  </div> 
 
   <nav class="header-nav ms-auto">
     <ul class="d-flex align-items-center">

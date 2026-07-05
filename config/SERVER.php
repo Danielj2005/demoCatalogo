@@ -2,12 +2,13 @@
 
 /*----------  Datos del servidor  ----------*/
 const SERVER="localhost";
-const DB="danikat_db";
+const DB="demo_catalogo";
 const USER="root";
 const PASS="";
 
-const PHONE = "584244189963";
+const PHONE = "04244189963";
 const COMPANY = "Tecnosystem";
+const LOGO = "logo.webp";
 
 /*----------  Datos de la encriptacion (No modificar) ----------*/
 const METHOD="AES-256-CBC";
