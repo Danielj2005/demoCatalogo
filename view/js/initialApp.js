@@ -1,33 +1,3 @@
-// inicializar la libreria Select2 
-
-const getIndicators = (i, active) => `
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${i}" class="${active}" aria-current="${i == 0 ? 'true' : 'false'}" aria-label="Slide ${i + 1}"></button>
-`;
-
-const getInners = (file, active) => `
-    <div class="carousel-item ${active}">
-        <img src=".${file}" style="width: 35rem; height:35rem; " class="d-block" alt="...">
-    </div>
-`;
-
-const getCarrusel = (items, i) => `
-    <div id="carouselExampleIndicators" class="carousel slide carousel-dark">
-
-        <div class="carousel-inner" id="inner">
-            ${items.map((img) => getInners(img, i === 0 ? 'active' : ''))}
-        </div>
-        ${items.length > 1 ?
-            `<button id="indicator_prev" class="text-purple-900 carousel-control-prev carousel-dark" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon bg-primary p-4 rounded-2xl" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button id="indicator_next" class="carousel-control-next carousel-dark" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                <span class="bg-primary carousel-control-next-icon p-4 rounded-2xl" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>` 
-        : ''}
-    </div>
-`;
 
 function verImagen(url, producto) {
     let i = 0;
@@ -39,7 +9,10 @@ function verImagen(url, producto) {
         html: getCarrusel(data, i),
         confirmButtonText: 'Cerrar'
     });
+    inicializarCarrusel();
 }
+
+
 function dataTable(classTable = "example"){
     var t = $(`.${classTable}`).DataTable( { 
         language: {
@@ -89,5 +62,88 @@ function initCustomSelect() {
     });
 }
 
+/**
+ * Copia cualquier texto al portapapeles en Desktop y Mobile.
+ * @param {string} text - El texto que se desea copiar.
+ * @returns {Promise<boolean>} - Devuelve true si se copió con éxito.
+ */
+async function copyToClipboard(text) {
+    // Método 1: API Moderna (Navigator Clipboard)
+    if (navigator.clipboard && window.isSecureContext) {
+        try {
+            await navigator.clipboard.writeText(text);
+            Toastify({
+                text: "Precio Copiado correctamente",
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "linear-gradient(to right, #370863, #870873)",
+                }
+            }).showToast();
+            return true;
+        } catch (err) {
+            console.warn("Fallo con navigator.clipboard, usando fallback...", err);
+        }
+    }
+}
+
+
+
+/**
+ * Filtra en tiempo real. 
+ * No necesita pegarle a la BD en cada tecla porque ya tenemos los datos en state.
+ */
+window.handleSearch = (val) => {
+    
+    const searchTerm = val.toLowerCase();
+    const products = document.querySelectorAll('.product-card'); 
+
+    products.forEach(product => {
+        // Busca en todo el texto de la tarjeta (Nombre, descripción, precio, etc.)
+        const text = product.innerText.toLowerCase();
+        
+        if (text.includes(searchTerm)) {
+            product.style.display = ""; // Muestra el elemento (usa el display original)
+        } else {
+            product.style.display = "none"; // Oculta el elemento
+        }
+    });
+};
+
+/**
+ * Filtra productos por categoría basándose en el texto del botón o data-attributes
+ */
+window.filterByCategory = (categoryName) => {
+    const products = document.querySelectorAll('.product-card');
+    const buttons = document.querySelectorAll('.category-btn');
+
+    // Actualizar estilos visuales de los botones de filtro
+    buttons.forEach(btn => {
+        const isMatch = btn.innerText.trim() === categoryName || (categoryName === 'all' && btn.innerText.trim() === 'Todos');
+        if (isMatch) {
+            btn.classList.add('bg-purple-600', 'text-white', 'border-purple-600', 'shadow-[0_0_10px_rgba(168,85,247,0.5)]');
+        } else {
+            btn.classList.remove('bg-purple-600', 'text-white', 'border-purple-600', 'shadow-[0_0_10px_rgba(168,85,247,0.5)]');
+        }
+    });
+
+    products.forEach(product => {
+        const productCategories = product.getAttribute('data-categories')?.toLowerCase().split(',') || [];
+        if (categoryName === 'all' || productCategories.includes(categoryName.toLowerCase())) {
+            product.style.display = "";
+        } else {
+            product.style.display = "none";
+        }
+    });
+};
+
 // Ejecutar al cargar la página o el modal
-document.addEventListener('DOMContentLoaded', initCustomSelect);
+document.addEventListener('DOMContentLoaded', () => {
+    initCustomSelect();
+    getProductos();
+
+    
+});

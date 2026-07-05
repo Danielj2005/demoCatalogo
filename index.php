@@ -1,13 +1,5 @@
 <!DOCTYPE html>
 <html lang="es" class="dark">
-<?php 
-
-include_once "./config/APP.php"; // se incluye el model principal
-include_once "./model/mainModel.php"; // se incluye el model principal
-include_once "./model/productModel.php"; // se incluye el model producto
-
-?>
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,7 +28,7 @@ include_once "./model/productModel.php"; // se incluye el model producto
             }
         }
     </script>
-
+    
     <!-- Favicons -->
     <link href="./view/img/logo.jpeg" rel="shortcut icon" type="image/x-icon">
 
@@ -52,20 +44,22 @@ include_once "./model/productModel.php"; // se incluye el model producto
     
 	<nav class="sticky top-0 z-40 bg-slate-950 border-b border-purple-900/20 p-4">
         <div class="max-w-7xl mx-auto d-flex flex-col flex-md-row gap-4 justify-content-between align-items-center">
-            <a href="./" class=" text-center md:text-left">
+            <a href="./" class="d-md-block d-none mb-3 text-center md:text-left sm:hidden">
                 <h1 class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-fuchsia-500 bg-clip-text text-transparent">DanikatShop</h1>
                 <p class="text-[10px] text-slate-500 uppercase tracking-widest">Todo lo que buscas en un solo lugar</p>
             </a>
 
-            <div class="relative w-full md:w-1/2">
-                <input type="text" placeholder="Buscar tortas, arreglos, manualidades..." 
-                    oninput="handleSearch(this.value)"
-                    class="w-full bg-slate-900 border border-slate-700 rounded-full px-5 py-2 text-sm focus:ring-2 ring-purple-500 outline-none">
-                <i class="fas fa-search absolute right-4 top-2.5 text-slate-500"></i>
-            </div>
+            <div class="align-items-center d-flex gap-3 w-100">
+                <div class="mb-3 position-relative d-flex align-items-center w-full mx-auto">
+                    <input type="text" placeholder="Buscar tortas, arreglos..." 
+                        oninput="handleSearch(this.value)"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-full px-4 py-2 text-sm focus:ring-2 ring-purple-500 outline-none">
+                    <i class="bi bi-search absolute right-4 top-2 text-slate-500"></i>
+                </div>
 
-            <div class="flex gap-4 items-center">
-                <a href="login.php" class="text-slate-700 hover:text-purple-500 transition"><i class="fs-3 fas fa-user-lock"></i></a> 
+                <div class="mb-3 flex gap-4 items-center">
+                    <a href="login.php" class="text-slate-700 hover:text-purple-500 transition"><i class="fs-3 bi bi-person-circle"></i></a> 
+                </div>
             </div>
         </div>
     </nav>
@@ -87,26 +81,51 @@ include_once "./model/productModel.php"; // se incluye el model producto
 
     <div id="app" style="display:none !important;" class=" min-h-screen">
         <header class="py-12 px-6 text-center animate-fade-in">
-            <h2 class="text-4xl font-bold italic text-white mb-2">Todo lo que buscas en un solo lugar</h2>
+            <h2 class="md:text-2xl sm:text-xl font-bold italic text-white mb-2">Todo lo que buscas en un solo lugar</h2>
             
             <!-- Filtros por Categoría -->
-            <div id="category-filters" class="flex flex-wrap justify-center gap-3 mt-6">
-                <button onclick="filterByCategory('all')" class="category-btn px-4 py-1.5 rounded-full border border-purple-500/50 text-slate-300 text-sm transition-all hover:bg-purple-500/20 bg-purple-600 text-white border-purple-600 shadow-[0_0_10px_rgba(168,85,247,0.5)]">Todos</button>
-                <!-- Aquí puedes inyectar más botones dinámicamente o manualmente -->
+            <div class="dropdown text-center" data-bs-theme="dark">
+                <button class="btn btn-primary dropdown-toggle position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-sliders" ></i>
+                    <span class="" > Filtros  </span>
+                    <span id="num_filter" class="d-none badge position-absolute text-bg-danger" style="top: -.8rem;  right: -1rem;"></span>
+                </button>
+                
+                <ul id="category-filters" class="dropdown-menu">
+                    <li id="dropdown-item-all" class=" dropdown-item transition-all hover:bg-purple-500/20" >
+                        <button onclick="filterByCategory('all', 0)" class="category-btn">Todos</button>
+                    </li>
+                </ul>
             </div>
         </header>
-        <main class="max-w-7xl mx-auto p-6">
-            <?php producto_model::obtenerCatalogo(false); ?>
+        <main class="max-w-7xl mx-auto p-3" id="main">
+            <div id="cards" class="grid gap-3 justify-around grid-cols-2 sm:grid-cols-2 md:grid-cols-4"></div>
         </main>
     </div>
+    
+    <!-- Modal -->
+    <div data-bs-theme="dark" class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Detalles de producto</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="gap-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 modal-body" id="modalBody">
 
-    <script src="view/js/bootstrap.min.js"></script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Custom scripts for all pages-->
+    <script src="view/js/bootstrap.bundle.min.js"></script>
     <script src="view/js/sweetalert2.min.js"></script>
-        <script type="text/javascript" >
-            const index = false;
-        </script>
-    <script src="view/js/app.js"></script>
+    <script src="view/js/DanikatAlert.js"></script>
+    <script src="view/js/renderCatalogo.js"></script>
+    <script src="view/js/catalogo.js"></script>
+    <script src="view/js/index.js"></script>
 </body>
 
 </html>

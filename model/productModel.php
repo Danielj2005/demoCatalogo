@@ -37,6 +37,7 @@ class producto_model extends modeloPrincipal {
                                             </span>
                                             
                                         </div>
+
                                         <div class="backdrop-blur-md bg-black/60 border border-white/10 bottom-4 left-4 px-4 py-1 relative rounded-full">
         
                                             <span class="text-sm font-bold text-white">
@@ -49,6 +50,7 @@ class producto_model extends modeloPrincipal {
                                                 <?= "€ ".self::formatnumber("VES",$mostrar["precio"] * $prices['EURO']); ?>
                                             </span>
                                         </div>
+                                        
                                         <div class="hidden backdrop-blur-md bg-black/60 border border-white/10 bottom-4 left-4 px-4 py-1 relative rounded-full">
                                             <span class="text-sm font-bold text-white">
                                                 <?= "USDT ".self::formatnumber("VES",$mostrar["precio"] * ($prices['USD'] * 1.3 )); ?>
@@ -63,6 +65,7 @@ class producto_model extends modeloPrincipal {
                                 <?php endif; ?>
                             </div>
                         </div>
+                        
                         <div class="p-6">
                             <h3 class="text-white text-md font-semibold mb-1 truncate mb-4"><?= ucwords(strtolower($mostrar['nombre'])) ?></h3>
                             <div class="row justify-content-center align-items-center">
@@ -107,7 +110,7 @@ class producto_model extends modeloPrincipal {
         return $id_producto;
     }
 
-    private static function formatnumber (string $moneda, float $precio) {
+    public static function formatnumber (string $moneda, float $precio) {
         if ($moneda == "USD") {
             return number_format($precio, 2, ".", ",");
         }else{
@@ -130,14 +133,25 @@ class producto_model extends modeloPrincipal {
                 INNER JOIN categorias AS C ON C.id = CP.categoria_id
                 WHERE CP.producto_id = $id_producto"); 
 
+            $stock = rand(1,60);
+            
+            $stock = $stock > 30 ? "primary" : $stock;
+            $stock = $stock < 30 ? "warning" : $stock;
+            $stock = $stock < 20 ? "danger" : $stock;
+            $stock = $mostrar["precio"] < 1 ? "secondary" : $stock;
+            $stock = $mostrar["precio"] > 1 && $stock ? "success" : $stock;
+
             ?>
             <tr class="text-center">
                 <td class="text-center"></td>
                 <td class="text-start">
-                    <p class=" fw-bold mb-1"><?= ucwords(strtolower($mostrar["nombre"])) ?> </p>
-                    <small class="flex gap-1 text-muted items-center"> 
+                    <p class="fw-bold mb-1">
+                        <span class="rounded-5 badge fw-bold text-bg-<?= $stock ?> text-<?= $stock ?>">.</span>
+                        <?= ucwords(strtolower($mostrar["nombre"])) ?>
+                    </p>
+                    <small class="d-flex gap-1 text-muted align-items-center"> 
                         <?php while ($cat = mysqli_fetch_assoc($categorias)) { ?> 
-                            <span class="bg-indigo-600 text-white px-2 py-1 rounded-3xl text-xs">
+                            <span class="bg-indigo-600 badge p-2 text-white rounded-5 text-bg-dark">
                                 <?= $cat['categorias'] ?>
                             </span>
                         <?php } ?> 
@@ -146,43 +160,43 @@ class producto_model extends modeloPrincipal {
                 <td class="text-center">
                     <?php if ($mostrar["precio"] < 1): ?>
                         <div class="flex justify-center gap-2 flex-wrap items-center">
-
-                            <span class="badge text-bg-danger fs-6">Bajo pedido</span>
+                            <span class="badge text-bg-danger p-2 text-sm">Bajo pedido</span>
                         </div>
 
                     <?php else: ?>
-                        <div class="flex justify-center gap-2 flex-wrap items-center mb-2">
+                        <div class="dropdown flex justify-center gap-2 flex-wrap items-center mb-2">
 
-                            <span class="badge text-bg-success fs-6">
+                            <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?= "$ ".self::formatnumber("USD",$mostrar["precio"]); ?>
-                            </span>
-    
-                            <span class="badge text-bg-secondary fs-6">
-                                <?= "Bs ".self::formatnumber("VES",$mostrar["precio"] * $prices['USD']); ?>
-                            </span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item"> 
+                                    <span id="moneda_bs" class=" text-sm badge fw-bold text-bg-primary me-2"> <?= "Bs ".self::formatnumber("VES",$mostrar["precio"] * $prices['USD']); ?></span> 
+                                    <i class="btn bi bi-copy" onclick="copyToClipboard('<?= self::formatnumber('VES',$mostrar['precio'] * $prices['USD']); ?>')"></i>
+                                </li>
+                                <li class="dropdown-item">
+                                    <span id="moneda_euro" class=" text-sm badge fw-bold text-bg-secondary me-2"> <?= "€ ".self::formatnumber("VES",$mostrar["precio"] * $prices['EURO']); ?></span> 
+                                    <i class="btn bi bi-copy" onclick="copyToClipboard('<?= self::formatnumber('VES',$mostrar['precio'] * $prices['EURO']); ?>')"></i>
+                                </li>
+                                <li class="d-none"> 
+                                    <span id="moneda_usdt" class=" text-sm badge text-bg-info me-2"> <?= "USDT ".self::formatnumber("VES",$mostrar["precio"] * ($prices['USD'] * 1.3 )); ?></span> 
+                                    <i class="btn bi bi-copy" onclick="copyToClipboard('<?= self::formatnumber('VES',$mostrar['precio'] * ($prices['USD'] * 1.3 )); ?>')"></i>
+                                </li>
+                                    
+                            </ul>
                         </div>
 
-                        <div class="flex justify-center gap-2 flex-wrap items-center mb-2">
-
-                            <span class="badge text-bg-primary fs-6">
-                                <?= "€ ".self::formatnumber("VES",$mostrar["precio"] * $prices['EURO']); ?>
-                            </span>
-                            <span class="badge text-bg-info text-sm hidden">
-                                <?= "USDT ".self::formatnumber("VES",$mostrar["precio"] * ($prices['USD'] * 1.3 )); ?>
-                            </span>
-                            
-                        </div>
                     <?php endif; ?>
                 </td>
                 <td>
-                    <button onclick="verImagen('<?= $imgSrc; ?>','<?= $mostrar['nombre'] ?>' )" class="bg-slate-500 hover:bg-slate-800 text-white px-2 py-1 rounded text-xs">
-                        <i class="fas fa-image mr-1"></i> 
-                        <span class="xs:hidden font-bold">Ver Imagen</span>
+                    <button onclick="verImagen('<?= $imgSrc; ?>','<?= $mostrar['nombre'] ?>' )" class="btn btn-secondary text-xs">
+                        <i class="bi bi-image mr-1"></i> 
+                        <span class="small d-none d-md-block">Ver Imagen</span>
                     </button>
                 </td>
                 <td class="col text-center">
                     <button data-bs-toggle="modal" data-bs-target="#editar_producto"
-                        onclick="editingProduct('<?= modeloPrincipal::encryptionId($mostrar['id']) ?>')" class="btn_edit_produto btn btn-warning">
+                        onclick="editingProduct('<?= modeloPrincipal::encryptionId($mostrar['id']) ?>')" class="btn_edit_produto btn btn-warning text-xs">
                             <i class="bi bi-pencil-square"></i>
                     </button>
                 </td>
@@ -192,13 +206,13 @@ class producto_model extends modeloPrincipal {
                         <form action="../controller/producto_controlador.php" method="post" class="SendFormAjax" data-type-form="update_estate" >
                             <input type="hidden" name="modulo" value="activo">          
                             <input type="hidden" name="id" value="<?= modeloPrincipal::encryptionId($mostrar['id']) ?>">
-                            <button class="btn btn-success bi-check-circle" title="state de la categoría">&nbsp;Activo</button>
+                            <button class="btn btn-danger bi bi-x-circle text-xs" title="estado del producto" type="submit"> </button>
                         </form>
-                    <?php } else { ?>
+                        <?php } else { ?>
                         <form action="../controller/producto_controlador.php" method="post" class="SendFormAjax" data-type-form="update_estate" >
                             <input type="hidden" name="modulo" value="inactivo">          
                             <input type="hidden" name="id" value="<?= modeloPrincipal::encryptionId($mostrar['id']) ?>">
-                            <button class="btn btn-danger bi-x-circle" title="estado del producto" type="submit">&nbsp;Inactivo</button>
+                            <button class="btn btn-success bi bi-check-circle text-xs" title="state de la categoría"> </button>
                         </form>
                     <?php }  ?>
                 </td>

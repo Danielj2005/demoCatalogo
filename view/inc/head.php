@@ -22,8 +22,7 @@
                     slate: { 950: '#020617', },
                     purple: { 400: '#c084fc', 500: '#a855f7', 600: '#9333ea', },
                     fuchsia: { 500: '#d946ef', 600: '#c026d3', 700: '#a21caf', },
-                },
-                fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'], },
+                }
             }
         }
     }
@@ -32,13 +31,10 @@
 <!-- Favicons -->
 <link href="./img/logo.jpeg" rel="shortcut icon" type="image/x-icon">
 
-<!-- Custom fonts for this template-->
-<link href="./fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
 <link href="./css/app.css" rel="stylesheet">
 <link href="./css/bootstrap.min.css" rel="stylesheet">
 <link href="./css/bootstrap-icons.css" rel="stylesheet">
 <link href="./css/dataTables.bootstrap5.min.css" rel="stylesheet">
 <link href="./css/sweetalert2.min.css" rel="stylesheet">
 <link href="./css/toastify.css" rel="stylesheet">
-<link href="./css/select2.min.css" rel="stylesheet">
+<link href="./css/carousel.css" rel="stylesheet">
