@@ -1,12 +1,15 @@
 <?php 
 session_start();
-require_once "../config/SERVER.php";
 
-include_once "../include/modelos_include.php"; // se incluyen los modelos necesarios para la vista
+require_once "../config/APP.php";
+require_once "../config/SERVER.php";
+require_once "../model/mainModel.php";
+require_once "../model/alertModel.php"; 
+
 
 // se obtiene la configuracion de la base de datos
 
-
+// echo modeloPrincipal::hashear_contrasena(123456789);
 // modulo a trabajar
 $modulo = modeloprincipal::limpiar_cadena($_POST["modulo"]);
 

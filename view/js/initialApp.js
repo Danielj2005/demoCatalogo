@@ -42,7 +42,7 @@ function initCustomSelect() {
         tag.dataset.value = option.value;
         
         // Estilo base de la etiqueta (DanikatStyle)
-        tag.className = 'cursor-pointer px-4 py-1 rounded-full border border-purple-500/50 text-slate-300 transition-all hover:bg-purple-500/20';
+        tag.className = 'btn rounded-5 small btn-outline-primary text-muted';
         
         // Evento al hacer clic
         tag.onclick = () => {
@@ -50,11 +50,11 @@ function initCustomSelect() {
             
             // Alternar estilos visuales
             if (option.selected) {
-                tag.classList.remove('border-purple-500/50', 'text-slate-300');
-                tag.classList.add('bg-purple-600', 'text-white', 'border-purple-600', 'shadow-[0_0_10px_rgba(168,85,247,0.5)]');
+                tag.classList.remove('btn-outline-primary', 'text-muted');
+                tag.classList.add('btn-primary');
             } else {
-                tag.classList.add('border-purple-500/50', 'text-slate-300');
-                tag.classList.remove('bg-purple-600', 'text-white', 'border-purple-600', 'shadow-[0_0_10px_rgba(168,85,247,0.5)]');
+                tag.classList.add('btn-outline-primary', 'text-muted');
+                tag.classList.remove('btn-primary');
             }
         };
         
@@ -99,7 +99,7 @@ async function copyToClipboard(text) {
 window.handleSearch = (val) => {
     
     const searchTerm = val.toLowerCase();
-    const products = document.querySelectorAll('.product-card'); 
+    const products = document.querySelectorAll('.producto-card'); 
 
     products.forEach(product => {
         // Busca en todo el texto de la tarjeta (Nombre, descripción, precio, etc.)
@@ -143,7 +143,5 @@ window.filterByCategory = (categoryName) => {
 // Ejecutar al cargar la página o el modal
 document.addEventListener('DOMContentLoaded', () => {
     initCustomSelect();
-    getProductos();
-
-    
+    // getProductos();
 });

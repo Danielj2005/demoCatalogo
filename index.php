@@ -9,12 +9,12 @@ require_once "./model/productModel.php";
 
 // se definen la cantidad de acticulos que tendra cada pagina  del catalogo
 $page = isset($_POST['page']) ? max(1, intval($_POST['page'])) : 1;
-$per_page = isset($_POST['per_page']) ? max(1, intval($_POST['per_page'])) : 16;
+$per_page = isset($_POST['per_page']) ? max(1, intval($_POST['per_page'])) : 8;
 $offset = ($page - 1) * $per_page;
 
 // se consultan los productos del catalogo
-$catalogo = mysqli_fetch_all(modeloPrincipal::consultar("SELECT id, nombre, precio, images 
-    FROM productos WHERE estado = 1 
+$catalogo = mysqli_fetch_all(modeloPrincipal::consultar("SELECT id, nombre, description, precio, images, estado
+    FROM productos
     ORDER BY nombre ASC LIMIT $per_page OFFSET $offset")); 
 
 // definicion de filtros
@@ -92,7 +92,7 @@ if ($end - $start < $maxButtons - 1) {
     
     <div id="app" style="display: none !important;" >
         <main id="main" class="main">
-            <div class="pagetitle mb-5">
+            <div class="pagetitle mb-5 d-none">
                 
                 <!-- Filtros por Categoría -->
                 <div class="dropdown text-center">
@@ -137,24 +137,27 @@ if ($end - $start < $maxButtons - 1) {
                 <?php  foreach ($catalogo as $producto) :
                         $id = $producto[0];
                         $nombre = $producto[1];
-                        $precio = $producto[2];
-                        $images = explode(',', $producto[3]);
+                        $description = $producto[2];
+                        $precio = $producto[3];
+                        $images = explode(',', $producto[4]);
                         $images = $images[0];
+                        $estado = $producto[5];
 
                         ?>
 
-                        <div class="fs-4 rounded-4 card p-2" data-bs-theme="drk">
+                        <div class="fs-4 rounded-4 card p-2 producto-card" data-bs-theme="drk">
                             <div data-categories="" class="product-card product_<?= $id ?> overflow-hidden">
                                 <div class="position-relative overflow-hidden mb-3" style="height: 15rem;">
                                     <img src="<?= $images ?>" class="w-100 h-100 rounded-bottom-0 rounded-4" alt="Imagen del producto">
                                     <div class="badge_precio_container">
                                         <div class="bg_badge_precio badge border border-white position-relative rounded-5">
-                                            <span class="precio_card"><?= $precio >= 1.00 ? "$ ".$precio : 'Bajo pedido' ?></span>
+                                            <span class="precio_card"><?= $estado == 1 ? "$ ".$precio : 'AGOTADO' ?></span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="text-start">
                                     <a onclick="detallesProductoById(<?= $id ?>)" class="fs-6 text-muted mb-4 fw-semibold" data-bs-toggle="modal" data-bs-target="#exampleModal"><?= ucwords(strtolower($nombre)); ?></a>
+                                    
                                 </div>
                                 <div class="">
                                     <div class="row justify-content-around align-items-cente">
@@ -165,7 +168,7 @@ if ($end - $start < $maxButtons - 1) {
                                             </button> 
                                         </div>
                                         <div class="col-6 mb-2 text-center">
-                                            <button onclick="askWhatsApp('<?= $nombre ?>', <?= $precio ?>, <?= PHONE ?>)" 
+                                            <button id="<?= $id ?>" producto="<?= $nombre ?>" onclick="askWhatsApp(<?= $id ?>, <?= $precio ?>, <?= PHONE ?>)" 
                                                 type="submit" class="btn btn-success rounded-5">
                                                     <i class="bi bi-whatsapp"></i>
                                                     <span class="small d-non">WhatsApp</span>
@@ -183,7 +186,7 @@ if ($end - $start < $maxButtons - 1) {
                 <!-- pagination -->
                 <div id="catalog-pagination" class="w-100 d-flex justify-content-center align-items-center gap-2 my-5">
                     
-                    <form id="" method="POST" action="index-admin.php" class="SendFormAjax text-start">
+                    <form id="" method="POST" action="index.php" class="SendFormAjax text-start">
                         
                         <input id="" name="page" type="hidden" value="<?= $page - 1 ?>">
                         <button <?= $page >= $totalPages ? 'disabled' : '' ?> type="submit" class="btn btn-secondary">
@@ -199,10 +202,10 @@ if ($end - $start < $maxButtons - 1) {
     
                     <?php } ?>
     
-                    <form id="" method="POST" action="index-admin.php" class="SendFormAjax text-start">
+                    <form id="" method="POST" action="index.php" class="SendFormAjax text-start">
                 
                         <input id="" name="page" type="hidden" value="<?= $page + 1 ?>">
-                        <button <?= $page >= $totalPages ? 'disabled' : '' ?> type="submit" class="btn btn-primary">
+                        <button <?= $page >= $totalPages ? 'disabled' : '' ?> type="submit" class="<?= $page >= $totalPages  ? 'btn btn-secondary' : 'btn btn-primary' ?>">
                             <span class="small">Siguiente</span>
                             <i class="bi bi-arrow-right"></i>
                         </button>  
@@ -217,12 +220,12 @@ if ($end - $start < $maxButtons - 1) {
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-            <div class="modal-content bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl">
+            <div class="modal-content rounded-4 border border-secondary shadow-lg">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Detalles de producto</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="gap-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 modal-body" id="modalBody">
+                <div class="m-0 p-3 align-items-center justify-content-around modal-body row" id="modalBody">
 
                 </div>
             </div>
@@ -253,7 +256,6 @@ if ($end - $start < $maxButtons - 1) {
 
     //config_model::verificar_actualizacion_configuracion(); 
     ?>
-    <script src="./view/js/añadir_producto.js"></script>
 </body>
 
 </html>

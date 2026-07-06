@@ -13,7 +13,8 @@ $modulo = modeloprincipal::limpiar_cadena($_POST["modulo"]);
 // verificar si el modulo es guardar
 if($modulo === 'Guardar'){
     
-    $producto = $_POST['producto'];
+    $producto = modeloprincipal::limpiar_cadena($_POST["producto"]);
+
     $price = empty($_POST['price']) ? 0.00 : $_POST['price']; // si no se envía un precio, se asigna un valor por defecto de 1.00
     $category = $_POST['category'];
     $image = $_POST['image'];
@@ -70,7 +71,7 @@ if($modulo === 'Guardar'){
     $price = number_format($price, 2, '.', ',');
 
     // se valida el campo nombre del producto
-    if (modeloPrincipal::verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9 ]{3,200}", $producto)) {
+    if (!preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9 ]{3,255}$/u', $producto)) {
         alert_model::alerta_simple("¡Ocurrió un error!","El nombre del producto $producto no cumple con el formato establecido","error");
         exit();
     }
@@ -78,12 +79,21 @@ if($modulo === 'Guardar'){
     // se registran los datos del producto
     try {
 
-        $registrar = modeloPrincipal::InsertSQL("productos", "nombre, precio, description, images, image_hash, state, created_at" ,"'$producto', $price, '$desc', '$images_string', '$image_hash_string', 1, NOW()");
+        $registrar = modeloPrincipal::InsertSQL("productos", "nombre, precio, description, images, image_hash, estado" ,"'$producto', $price, '$desc', '$images_string', '$image_hash_string', 1");
 
         if (!$registrar) {
             alert_model::alerta_simple("¡Ocurrió un error!","ocurrio un error al registrar un producto.","error");
             exit();
         }
+    } catch (Exception $e) {
+        // alert_model::alert_reg_error();
+        echo $e;
+        alert_model::alerta_simple("Ocurrio un error inesperado!","ocurrio un error al registrar un producto.","error");
+
+        exit();
+    }
+
+    try {
 
         $id_producto = producto_model::obtener_id_recien_registrada();
 
@@ -101,7 +111,7 @@ if($modulo === 'Guardar'){
         exit();
     } catch (Exception $e) {
         // alert_model::alert_reg_error();
-        alert_model::alerta_simple("$e","ocurrio un error al registrar las categorías de un producto.","error");
+        alert_model::alerta_simple("Ocurrio un error inesperado!","ocurrio un error al registrar las categorías de un producto.","error");
 
         exit();
     }

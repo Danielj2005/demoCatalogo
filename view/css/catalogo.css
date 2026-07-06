@@ -11,12 +11,14 @@
 } */
 .product-card{
     display: grid;
-    grid-template-rows: 15rem 5rem auto;
+    grid-template-rows: 15rem auto auto;
     gap: 1rem;
-
+    
 }
 
-
+.product-card p {
+    font-size: 1rem !important;
+}
 
 .badge_precio_container{
     position: absolute;

@@ -126,12 +126,13 @@ window.filterByCategory = async (categoryName, ID, page = 1) => {
  */
 
 // --- LÓGICA DE WHATSAPP ---
-window.askWhatsApp = (nombre, precio, numeroWhats) => {
+window.askWhatsApp = (id = "0", precio, numeroWhats) => {
 
     const numeroLimpio = numeroWhats;
-    
+    let name = document.getElementById(id).getAttribute('producto');
+    console.log(name);
     const precioTxt = precio ? `por un valor de *$${precio}*` : "";
-    const msg = `¡Hola DanikatShop! Me interesa su producto:\n\n*${nombre}*\n\n${precioTxt}\n\n¿Podrían darme más detalles?`;
+    const msg = `¡Hola! Me interesa su producto:\n\n*${name}*\n\n${precioTxt}\n\n¿Podrían darme más detalles?`;
     
     const url = `https://api.whatsapp.com/send?phone=${numeroLimpio}&text=${encodeURIComponent(msg)}`;
 

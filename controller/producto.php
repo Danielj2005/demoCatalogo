@@ -30,29 +30,32 @@ try {
             $quety = $products;
             
         ?>
-            <div class="custom-carousel">
-                <div class="carousel-track-container">
-                    <ul class="carousel-track" id="carouselTrack">
-                        <?php foreach ($files as $file) { ?>
-                            <li class="carousel-slide ${active}">
-                                <img src=".<?= $file ?>" onerror="this.onerror=null; this.src='./img/404.png';" onerror="this.src='ruta/imagen-no-encontrada.jpg'">
-                            </li>
-                        <?php  } ?>
-                    </ul>
+        
+            <div class="col-12 col-md-6 mb-3">
+            
+                <div class="custom-carousel">
+                    <div class="carousel-track-container">
+                        <ul class="carousel-track" id="carouselTrack">
+                            <?php foreach ($files as $file) { ?>
+                                <li class="carousel-slide ${active}">
+                                    <img src="<?= $file ?? './img/404.png' ?>">
+                                </li>
+                            <?php  } ?>
+                        </ul>
+                    </div>
+                    <?php if (count($files) > 1) { ?>
+                        <button class="carousel-button prev-btn" id="prevBtn">&#10094;</button>
+                        <button class="carousel-button next-btn" id="nextBtn">&#10095;</button>
+                    <?php  } ?>
                 </div>
-                <?php if (count($files) > 1) { ?>
-                    <button class="carousel-button prev-btn" id="prevBtn">&#10094;</button>
-                    <button class="carousel-button next-btn" id="nextBtn">&#10095;</button>
-                <?php  } ?>
             </div>
 
             
-            <hr class="md:hidden mt-5 mb-3">
-            <div class="p-3 text-start border border-slate-800 rounded-3" style="height: fit-content;">
+            <div class="col-12 col-md-6 mb-3 p-3 text-start border border-secondary rounded-3" style="height: fit-content;">
                 <h3 class="fw-bold mb-4 text-xl">
                     <?= ucwords(strtolower($quety['nombre'])) ?>
                 </h3>
-                <div class="">
+                <div class="mb-2">
                     <div class="bg_badge_precio badge border border-white rounded-5">
                         <span class="fs-5"><?= $quety['precio'] >= 1.00 ? "$ ".$quety['precio'] : 'Bajo pedido' ?></span>
                     </div>

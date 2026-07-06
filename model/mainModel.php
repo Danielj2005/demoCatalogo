@@ -64,6 +64,30 @@ class modeloPrincipal {
     }
 
 
+    public static function generar_uuid() {
+        return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0x0fff) | 0x4000,
+            mt_rand(0, 0x3fff) | 0x8000,
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+        );
+    }
+    /****************************************************************************************************************/
+    /*********************** funciones para encryptacion y desencryptacion de datos sencibles ***********************/
+    /****************************************************************************************************************/
+    /********** Funcion encriptar Cadena  **********/
+
+
+    public static function hashear_contrasena($contrasena_plana) {
+        // Usamos el algoritmo PASSWORD_BCRYPT.
+        // PHP automáticamente añade un "salt" criptográficamente seguro al hash.
+        $hash_seguro = password_hash($contrasena_plana, PASSWORD_BCRYPT);
+        
+        return $hash_seguro;
+    }
+
+
     public static function encryption($string) {
         $key = SECRET_KEY;
         $result = '';
