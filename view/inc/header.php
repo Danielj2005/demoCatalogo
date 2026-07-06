@@ -19,7 +19,7 @@ $tasas_cotizacion = modeloPrincipal::obtener_precio_dolar();
   <div class="search-bar">
     <form method="POST" action="#" class="search-form d-flex align-items-center position-relative">
       <div class="align-items-center bg-body-secondary bg-opacity-75 d-flex h-100 justify-content-center position-absolute start-0 w-100">
-          <i class="text-white bi bi-lock-fill"></i>
+          <i class="bi bi-lock-fill"></i>
       </div>
       <input type="text" name="query" placeholder="Buscar productos..." title="Enter search keyword">
       <button type="submit" title="Search"><i class="bi bi-search"></i></button>
@@ -58,18 +58,21 @@ $tasas_cotizacion = modeloPrincipal::obtener_precio_dolar();
       <li class="nav-item dropdown pe-3">
 
         <button class="nav-link nav-profile d-flex align-items-center pe-0" data-bs-toggle="dropdown">
-          <span class="d-none d-md-block dropdown-toggle ps-2">USER<?php // $_SESSION['dataUsuario']['nombre']." ".$_SESSION['dataUsuario']['apellido']; ?></span>
+          <span class="d-none d-md-block dropdown-toggle ps-2"><?= $_SESSION['dataUser']['nombre']; ?></span>
         </button>
 
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
           <li class="dropdown-header">
-            <h6>USER NAME<?php // $_SESSION['dataUsuario']['nombre']." ".$_SESSION['dataUsuario']['apellido']; ?></h6>
-            <span>ROL USER<?php // $_SESSION['dataUsuario']['nombreRolUsuario']; ?></span>
+            <h6><?= $_SESSION['dataUser']['nombre']; ?></h6>
+            <span><?= $_SESSION['dataUser']['rol'] == 1 ? 'Dev Master' : 'usuario Demo'; ?></span>
           </li>
 
           <li> <hr class="dropdown-divider"> </li>
 
-          <li>
+          <li class="position-relative">
+            <div class="align-items-center bg-body-secondary bg-opacity-75 d-flex h-100 justify-content-center position-absolute start-0 w-100">
+                <i class="bi bi-lock-fill"></i>
+            </div>
             <a class="dropdown-item d-flex align-items-center" href="./mi_perfil.php">
               <i class="bi bi-person"></i>
               <span>Mi Pefil</span>
@@ -89,7 +92,10 @@ $tasas_cotizacion = modeloPrincipal::obtener_precio_dolar();
             
             
             <?php //}  ?>
-            <li>
+            <li class="position-relative">
+            <div class="align-items-center bg-body-secondary bg-opacity-75 d-flex h-100 justify-content-center position-absolute start-0 w-100">
+                <i class="bi bi-lock-fill"></i>
+            </div>
               <a class="dropdown-item d-flex align-items-center" href="./configuracion.php">
                 <i class="bi bi-gear-fill"></i>
                 <span>Configuración</span>

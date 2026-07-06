@@ -84,7 +84,7 @@ $l_marca = 1;
             ?>
             <main id="main" class="main">
                 <div class="pagetitle">
-                    <a class="btn btn-outline-secondary mb-3" href="./">
+                    <a class="d-none btn btn-outline-secondary mb-3" href="./">
                         <i class="bi bi-chevron-left"></i> 
                         <span>Volver al Panel Principal</span>
                     </a>
@@ -183,13 +183,11 @@ $l_marca = 1;
                             <div class="card rounded-2 p-2">
                                 <div class="car-body row p-3">
                                     
-                                    
-                                    
                                     <h2 id="titleModuleProducts" class="mt-2 mb-3 fs-2 col-12 fw-bold card-title">Inventario de Productos</h2>
 
                                     <?php if ($r_productos && $l_productos): ?>
 
-                                        <div class="setCol text-center col-md-4 col-12 mb-3">
+                                        <div class="setCol text-center col-md-6 col-12 mb-3">
                                             <button data-bs-target="#producto_modal"  data-bs-toggle="registrar_producto" id="btn-toggle" type="button" class="col-12 btn btn-success">
                                                 <i class="bi bi-plus-circle"></i> Registrar Productos 
                                             </button>
@@ -197,13 +195,13 @@ $l_marca = 1;
 
                                     <?php endif; ?>
 
-                                    <div class="setCol text-center col-md-4 col-12 mb-3">
+                                    <div class="setCol text-center col-md-6 col-12 mb-3">
                                         <button data-bs-target="#lista_producto_inactivo_modal"  data-bs-toggle="modal" id="btn-toggle" type="button" class="col-12 btn btn-danger">
                                             <i class="bi bi-x-circle"></i> Ver Productos Inactivos
                                         </button>
                                     </div>
                                     
-                                    <div class="setCol text-center col-12 mb-2 <?= $r_productos == 0 ? 'col-md-6' : 'col-md-4'?>">
+                                    <div class="d-none setCol text-center col-12 mb-2 <?= $r_productos == 0 ? 'col-md-6' : 'col-md-4'?>">
                                         <div class="col-12 dropdown">
                                             <button class="col-12 btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bi bi-file-text"></i>
