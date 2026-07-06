@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+require_once "../config/APP.php";
 require_once "../config/SERVER.php";
 require_once "../model/mainModel.php"; // se incluye el model principal
 require_once "../model/productModel.php"; // se incluye el model producto
@@ -8,7 +9,50 @@ require_once "../model/categoryModel.php"; // se incluye el model de categorias
 
 
 $estado = (!isset($_POST['estado_rol'])) ? '1' : $_POST['estado_rol'];
-$catalogo = modeloPrincipal::consultar("SELECT id FROM productos WHERE state = 1");
+$catalogo = modeloPrincipal::consultar("SELECT id FROM productos WHERE estado = 1");
+
+
+$titleCards = [
+    "Usuarios",
+    "Inventario",
+    "Ventas",
+    "Bitácora",
+    "Configuración"
+];
+$iconCards = [
+    "bi-people",
+    "bi-box-seam-fill ",
+    "bi-currency-dollar",
+    "bi-clock-history",
+    "bi-gear"
+];
+
+
+$cantRegCards = [
+    "1",   
+    "46",   
+    "44",  
+    "100",
+    "1"
+];
+
+$footerCard = [
+    "Usuarios registrados",
+    "Productos registrados",
+    "Ventas registradas",
+    "Movimientos del sistema.",
+    "Configuración del sistema"
+];
+
+$path = [
+    "/user",
+    "/plan",
+    "/monthlyPayment",
+    "/payments",
+    "/enterprise",
+    "/binnacle",
+    "/setting"
+];
 
 
 if ($_SESSION['logged_in'] === true) { ?>
@@ -60,38 +104,20 @@ if ($_SESSION['logged_in'] === true) { ?>
 
             <section class="dashboard">
                 <div class="row">
-
-                    <div class="col-12 mb-1">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Total de las Ventas del Día</h5>
-
-                                <div class="row">
-                                    <div class="col-12 col-md-6 mb-1">
-                                        <div class="input-group mb-2">
-                                            <span class="input-group-text" id="basic-addon1">Total ($)</span>
-                                            <!-- <input type="text" class="form-control" disabled id="TotalUSD" readOnly value="
-                                         <?php //($total_hoy_dolar == "") ? 0 : modeloPrincipal::number_format_prices($total_hoy_dolar) 
-                                            ?>"> -->
-                                            <input type="text" class="form-control" disabled id="TotalUSD" readOnly value="($total_hoy_dolar) ?>">
-                                            <span class="input-group-text" id="basic-addon1">$</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12 col-md-6 mb-1">
-                                        <div class="input-group mb-2">
-                                            <span class="input-group-text" id="basic-addon1">Total (Bs)</span>
-                                            <!-- <input type="text" class="form-control" disabled id="TotalBS" readOnly value="
-                                         <?php //($total_hoy_bs == "") ? '0' : modeloPrincipal::number_format_prices($total_hoy_bs) 
-                                            ?>"> -->
-                                            <input type="text" class="form-control" disabled id="TotalBS" readOnly value="$total_hoy_bs) ?>">
-                                            <span class="input-group-text" id="basic-addon1">Bs.</span>
-                                        </div>
-                                    </div>
+                    <?php foreach($titleCards as $index => $title) { ?>
+                        <div class="col-12 col-md-4 mb-3">
+                            <div class="card bg- text-">
+                                <div class="card-body">
+                                    <h5 class="card-title "> <a href="<?= $path[$index]; ?>"> <?= $title; ?> </a> </h5>
+                                    
+                                    <h2 class="card-text">
+                                        <i class="fs-1 bi <?= $iconCards[$index]; ?>"></i>&nbsp; <?= $cantRegCards[$index]; ?>
+                                    </h2>
+                                    <p class="card-text"><small><?= $footerCard[$index]; ?></small></p>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <?php } ?>
 
                     <div class="col-12 mb-2">
                         <div class="row">

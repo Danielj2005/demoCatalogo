@@ -1,3 +1,7 @@
+
+<?php 
+$tasas_cotizacion = modeloPrincipal::obtener_precio_dolar();
+?>
 <header id="header" class="header fixed-top d-flex align-items-center">
 
   <div class="d-flex align-items-center justify-content-around">
@@ -13,7 +17,10 @@
 
 
   <div class="search-bar">
-    <form class="search-form d-flex align-items-center" method="POST" action="#">
+    <form method="POST" action="#" class="search-form d-flex align-items-center position-relative">
+      <div class="align-items-center bg-body-secondary bg-opacity-75 d-flex h-100 justify-content-center position-absolute start-0 w-100">
+          <i class="text-white bi bi-lock-fill"></i>
+      </div>
       <input type="text" name="query" placeholder="Buscar productos..." title="Enter search keyword">
       <button type="submit" title="Search"><i class="bi bi-search"></i></button>
     </form>
@@ -26,7 +33,7 @@
 
         <button class="btn bg-secondary-light nav-icon fst-italic fs-6" data-bs-toggle="dropdown">
           <i class="bi bi-currency-exchange"></i>
-          &nbsp; Tasa USD: <span id="tasa_dolar">623.56<?php // modeloPrincipal::number_format_prices((float)$precio_dolar_actual) ?></span>Bs
+          &nbsp; Tasa USD: <span id="tasa_dolar"><?= $tasas_cotizacion['USD'] ?></span>Bs
         </button>
 
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">

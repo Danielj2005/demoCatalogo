@@ -68,19 +68,21 @@ function SendFormAjax() {
                 return;
             }
 
-            DanikatAlert.fire({
+            Swal.fire({
                 title: title_alerta[`${type_form}`],
                 text: text_alerta[`${type_form}`],
                 icon: type_alerta[`${type_form}`],
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6", // Default SweetAlert2 blue
+                // confirmButtonColor: "#3085d6", // Default SweetAlert2 blue
+                confirmButtonColor: '#0d6efd',
+                cancelButtonColor: '#dc3545',
                 confirmButtonText: "Sí, continuar",
                 cancelButtonText: "No, cancelar",
                 animation: "slide-from-top"
             }).then((result) => {
                 if (result.isConfirmed) {
                     // el usuario confirme la acción
-                    DanikatAlert.fire({
+                    Swal.fire({
                         title: "Procesando...",
                         text: "",
                         allowOutsideClick: false,

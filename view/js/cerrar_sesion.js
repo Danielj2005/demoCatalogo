@@ -5,13 +5,13 @@ $(document).ready(function(){
 
         // Llamar a un archivo PHP para destruir las variables de sesión
     
-        DanikatAlert.fire({
+        alert.fire({
             title: 'Estas Seguro(a)?',
             text: "Se cerrará la sesión",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#03A9F4',
-            cancelButtonColor: '#F44336',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#dc3545',
             confirmButtonText: ' Sí, Salir!',
             cancelButtonText: ' No, Cancelar!'
         }).then((result) => {

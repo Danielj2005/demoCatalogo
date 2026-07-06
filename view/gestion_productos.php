@@ -6,7 +6,6 @@ require_once "../config/APP.php";
 require_once "../config/SERVER.php";
 require_once "../model/mainModel.php"; // se incluye el model principal
 require_once "../model/productModel.php"; 
-
 require_once "../model/categoryModel.php"; // se incluye el model de categorias
 
 
@@ -43,7 +42,8 @@ require_once "../model/categoryModel.php"; // se incluye el model de categorias
 // $l_marca = modeloPrincipal::verificar_permisos_requeridos(['l_marca']);
 
 
-$precios = modeloPrincipal::obtener_precio_dolar();
+
+$tasas_cotizacion = modeloPrincipal::obtener_precio_dolar();
 
 $permiso_productos = 11;
 
@@ -88,7 +88,7 @@ $l_marca = 1;
                         <i class="bi bi-chevron-left"></i> 
                         <span>Volver al Panel Principal</span>
                     </a>
-                    <h1 class="text-center fs-1 titulosH my-2">Gestión de Productos <?= $precios['USD'] ?></h1>
+                    <h1 class="text-center fs-1 titulosH my-2">Gestión de Productos</h1>
                 </div>
                 <section class="section dashboard">
                     <div class="row m-0"> 
@@ -103,7 +103,7 @@ $l_marca = 1;
                                         <?php if ($r_categoria == 1 ): ?>
 
                                             <div class="text-center mb-2">
-                                                <button modal="registrarCategoria" type="button" data-bs-toggle="modal" data-bs-target="#modal" class="mb-2 btn_modal btn btn-success">
+                                                <button modal="registrarCategoria" type="button" data-bs-toggle="modal" data-bs-target="#registrar_categoria" class="mb-2 btn_modal btn btn-success">
                                                     <i class="bi bi-plus-circle"></i> Registrar nueva
                                                 </button>
                                             </div>
@@ -121,8 +121,11 @@ $l_marca = 1;
                                 <?php endif; ?>
 
                                 <?php if ($presentacion): ?>
-                                    <div class="text-center col-12 col-md-3 fs-4 rounded-2 card">
-                                        <h3 class="text-center mt-2 titulosH fs-4 fw-bold ">Presentaciones</h3>
+                                    <div class=" text-center col-12 col-md-3 fs-4 rounded-2 card position-relative">
+                                        <div class="align-items-center bg-body-secondary bg-opacity-75 d-flex h-100 justify-content-center position-absolute start-0 w-100">
+                                            <i class="bi bi-lock-fill"></i>
+                                        </div>
+                                        <h3 class="text-center mt-2 titulosH fs-4 fw-bold "> Presentaciones</h3>
 
                                         <?php if ($r_presentacion == 1 ): ?>
 
@@ -145,7 +148,10 @@ $l_marca = 1;
                                 <?php endif; ?>
 
                                 <?php if ($marca): ?>
-                                    <div class="text-center col-12 col-md-3 fs-4 rounded-2 card">
+                                    <div class="text-center col-12 col-md-3 fs-4 rounded-2 card position-relative">
+                                        <div class="align-items-center bg-body-secondary bg-opacity-75 d-flex h-100 justify-content-center position-absolute start-0 w-100">
+                                            <i class="bi bi-lock-fill"></i>
+                                        </div>
                                         <h3 class="text-center mt-2 titulosH fs-4 fw-bold ">Marcas</h3>
 
                                         <?php if ($r_marca == 1 ): ?>
@@ -239,7 +245,7 @@ $l_marca = 1;
                                     </div>
 
                                     <!-- leyenda de colores -->
-                                    <div class="my-3 col-12 text-start">
+                                    <div class="d-none my-3 col-12 text-start">
                                         <p class="text-secondary fs-6 fw-bold mb-1">Los Colores de indicadores en nombres de productos significan: </p>
                                         <ul class="list-unstyled overflow-hidden">
                                             <li class="list-item">
@@ -267,24 +273,24 @@ $l_marca = 1;
 
                                     <?php if ($l_productos == 1 ): ?>
 
+                                        <div id="tableListProducts" class="justify-content-between align-items-center table table-responsive">
+                                            <table class="table example mb-3 table-striped" id="example">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col text-center" scope="col">N.º</th>
+                                                        <th class="col text-center" scope="col">Producto</th>
+                                                        <th class="col text-center" scope="col">Precios</th>
+                                                        <th class="col text-center" scope="col">Imagenes</th>
+                                                        <th class="col text-center" scope="col">Editar</th>
+                                                        <th class="col text-center" scope="col">Desactivar</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                         
                                     <?php endif; ?>  
-                                    <div id="tableListProducts" class="justify-content-between align-items-center table table-responsive">
-                                        <table class="table example mb-3 table-striped" id="example">
-                                            <thead>
-                                                <tr>
-                                                    <th class="col text-center" scope="col">N.º</th>
-                                                    <th class="col text-center" scope="col">Producto</th>
-                                                    <th class="col text-center" scope="col">Precios</th>
-                                                    <th class="col text-center" scope="col">Imagenes</th>
-                                                    <th class="col text-center" scope="col">Editar</th>
-                                                    <th class="col text-center" scope="col">Desactivar</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -356,15 +362,15 @@ $l_marca = 1;
 
             
 
-        <div class="modal fade" id="registrar_categoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-theme="dark">
+        <div class="modal fade" id="registrar_categoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div id="modal_tamano" class="modal-dialog modal-dialog-scrollable">
-                <div class="modal-content bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-2xl">
+                <div class="modal-content rounded-4 border border-secondary shadow-md">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Registrar Categoría</h5>
                         <button id="btnCloseModal" type="button" class="text-white btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     
-                    <div class="modal-body row m-0" id="body_modal"> 
+                    <div class="modal-body" id="body_modal"> 
                         <form id="reg_categoria" action="../controller/categoria_controller.php" method="post" class="SendFormAjax" autocomplete="off" data-type-form="save">
                             <input type="hidden" name="modulo" value="Guardar">          
                             <div class="row mb-3 justify-content-center text-start">

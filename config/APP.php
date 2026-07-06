@@ -7,8 +7,12 @@
 	/*----------  
 	Nombre de la empresa o compañia
 	----------*/
-	const COMPANY="demoCatalogo";
+
 	const SLOGAN="Todo lo que buscas en un solo lugar";
+
+	const PHONE = "04165578357";
+	const COMPANY = "Tecnosystem";
+	const LOGO = "logo.webp";
 
 	/*----------  Idioma - Language
 	Español -> es 

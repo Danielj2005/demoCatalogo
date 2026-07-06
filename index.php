@@ -2,9 +2,10 @@
 session_start();
 
 // importacion de la conexion a la base de datos y al modelo de usuario
-require_once "config/SERVER.php";
-require_once "model/mainModel.php"; // se incluye el model principal
-require_once "model/productModel.php";
+require_once "./config/APP.php";
+require_once "./config/SERVER.php";
+require_once "./model/mainModel.php"; // se incluye el model principal
+require_once "./model/productModel.php";
 
 // se definen la cantidad de acticulos que tendra cada pagina  del catalogo
 $page = isset($_POST['page']) ? max(1, intval($_POST['page'])) : 1;
@@ -13,7 +14,7 @@ $offset = ($page - 1) * $per_page;
 
 // se consultan los productos del catalogo
 $catalogo = mysqli_fetch_all(modeloPrincipal::consultar("SELECT id, nombre, precio, images 
-    FROM productos WHERE state = 1 
+    FROM productos WHERE estado = 1 
     ORDER BY nombre ASC LIMIT $per_page OFFSET $offset")); 
 
 // definicion de filtros
@@ -28,10 +29,10 @@ if ($filters !== null) {
     $total = intval($total_row['total']);
     $query = "SELECT P.id, P.nombre, P.precio, P.images FROM productos AS P INNER JOIN categorias_productos AS CP ON P.id = CP.producto_id INNER JOIN categorias AS C ON C.id = CP.categoria_id $addQuery ORDER BY P.nombre ASC LIMIT $per_page OFFSET $offset";
 } else {
-    $total_stmt = modeloPrincipal::consultar("SELECT COUNT(*) AS total FROM productos WHERE state = 1");
+    $total_stmt = modeloPrincipal::consultar("SELECT COUNT(*) AS total FROM productos WHERE estado = 1");
     $total_row = mysqli_fetch_assoc($total_stmt);
     $total = intval($total_row['total']);
-    $query = "SELECT P.id, P.nombre, P.precio, P.images FROM productos AS P WHERE P.state = 1 ORDER BY P.nombre ASC LIMIT $per_page OFFSET $offset";
+    $query = "SELECT P.id, P.nombre, P.precio, P.images FROM productos AS P WHERE P.estado = 1 ORDER BY P.nombre ASC LIMIT $per_page OFFSET $offset";
 }
 
 $total_pages = ceil($total / $per_page);
@@ -50,10 +51,18 @@ if ($end - $start < $maxButtons - 1) {
 
 
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es">
 <head>
-    
-    <?php require_once "./view/inc/meta_include.php"; ?>
+        
+    <!-- titulo -->
+    <title><?= COMPANY; ?></title>
+    <!-- metadatos -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="E-comerce catálogo de productos, Sistema de Control de Inventario, Punto de Venta y Gestión de Clientes y Proveedores.">
+    <meta name="keywords" content="E-comerce, catálogo de productos, ventas, pedidos, whatsapp, Inventario, POS, gestión de clientes, proveedores">
+    <meta name="author" content="DANIEL BARRUETA">
 
 
     <!-- Favicons -->
@@ -76,7 +85,7 @@ if ($end - $start < $maxButtons - 1) {
 
 </head>
 
-<body class="toggle-sidebar" data-bs-theme="dak">
+<body class="toggle-sidebar">
 
     <?php require_once "./view/inc/catalogo_header.php"; ?>
     <?php require_once "./view/inc/loader.php"; ?>
@@ -86,7 +95,7 @@ if ($end - $start < $maxButtons - 1) {
             <div class="pagetitle mb-5">
                 
                 <!-- Filtros por Categoría -->
-                <div class="dropdown text-center" data-bs-theme="dar">
+                <div class="dropdown text-center">
                     <button class="btn btn-primary dropdown-toggle position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-sliders" ></i>
                         <span class="" > Filtros  </span>

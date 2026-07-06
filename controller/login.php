@@ -1,6 +1,7 @@
 <?php 
 session_start();
 
+require_once "../config/APP.php";
 require_once "../config/SERVER.php";
 include_once "../model/mainModel.php";
 include_once "../model/userModel.php"; 
@@ -17,7 +18,7 @@ $contraseña = modeloPrincipal::limpiar_cadena($_POST['pass']);
 // Se verifica que no se hayan recibido campos vacíos.
 modeloPrincipal::validar_campos_vacios([$usuario, $contraseña]);
 // Se realiza una consulta a la base de datos para verificar si el usuario existe y si las credenciales son correctas.
-$selectUser = model_user::consulta_usuario_condicion("*", "correo = '$usuario'");
+$selectUser = modeloPrincipal::consultar("SELECT * FROM users WHERE dni = '$usuario'");
 
 // obtenemos el resultado de la consulta y la guardamos en un array
 $datos_usuario = mysqli_fetch_array($selectUser);
@@ -89,7 +90,8 @@ $_SESSION['dataUser'] = [
 ];
 
 
-echo '<script type="text/javascript"> window.location = "./view/index.php";  </script>';
+// echo '<script type="text/javascript"> window.location = "./view/index.php";  </script>';
+echo '<script type="text/javascript"> window.location = "./view/gestion_productos.php";  </script>';
 
 
 mysqli_free_result($selectUser);
