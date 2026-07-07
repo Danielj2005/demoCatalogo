@@ -75,6 +75,10 @@ if($modulo === 'Guardar'){
         alert_model::alerta_simple("¡Ocurrió un error!","El nombre del producto $producto no cumple con el formato establecido","error");
         exit();
     }
+    if (!preg_match('/^[0-9]+(\.[0-9]{2})?$/', $price)) {
+        alert_model::alerta_simple("¡Ocurrió un error!","El precio del producto $price no cumple con el formato establecido","error");
+        exit();
+    }
 
     // se registran los datos del producto
     try {

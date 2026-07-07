@@ -4,7 +4,7 @@ function verImagen(url, producto) {
 
     const data = url.split(",");
 
-    DanikatAlert.fire({
+    alert.fire({
         title: `${producto}`,
         html: getCarrusel(data, i),
         confirmButtonText: 'Cerrar'

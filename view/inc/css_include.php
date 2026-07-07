@@ -16,6 +16,9 @@
 <!-- Template Main CSS File -->
 <link href="./css/nice_admin_styles/styles.css" rel="stylesheet">
 
+
+<link href="./css/catalogo.css" rel="stylesheet">
+<link href="./css/carousel.css" rel="stylesheet">
 <style>
     .card-title {
         margin-bottom: 1.5rem;

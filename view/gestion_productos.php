@@ -299,18 +299,24 @@ $l_marca = 1;
 
                                                         $stock = rand(1,60);
                                                         
-                                                        $stock = $stock > 30 ? "primary" : $stock;
-                                                        $stock = $stock < 30 ? "warning" : $stock;
-                                                        $stock = $stock < 20 ? "danger" : $stock;
-                                                        $stock = $mostrar["precio"] < 1 ? "secondary" : $stock;
-                                                        $stock = $mostrar["precio"] > 1 && $stock ? "success" : $stock;
+                                                        // $stock = $stock > 30 ? "primary" : $stock;
+                                                        // $stock = $stock < 30 ? "warning" : $stock;
+                                                        // $stock = $stock < 20 ? "danger" : $stock;
+                                                        // $stock = $mostrar["precio"] < 1 ? "secondary" : $stock;
+                                                        // $stock = $mostrar["precio"] > 1 && $stock ? "success" : $stock;
+                                                        $stock = "success";
+
+                                                        $precio_usd = producto_model::formatnumber("USD",$mostrar["precio"]);
+                                                        $precio_bs = producto_model::formatnumber("VES",$mostrar["precio"] * $tasas_cotizacion['USD']);
+                                                        $precio_euro = producto_model::formatnumber("VES",$mostrar["precio"] * $tasas_cotizacion['EURO']);
+                                                        $precio_usdt = producto_model::formatnumber("VES",$mostrar["precio"] * ($tasas_cotizacion['USD'] * 1.3));
 
                                                         ?>
                                                         <tr class="text-center">
                                                             <td class="text-center"></td>
                                                             <td class="text-start">
                                                                 <p class="fw-bold mb-1">
-                                                                    <span class="rounded-5 badge fw-bold text-bg-<?= $stock ?> text-<?= $stock ?>">.</span>
+                                                                    <span class="d-none rounded-5 badge fw-bold text-bg-<?= $stock ?> text-<?= $stock ?>">.</span>
                                                                     <?= ucwords(strtolower($mostrar["nombre"])) ?>
                                                                 </p>
                                                                 <small class="d-flex gap-1 text-muted align-items-center"> 
@@ -324,31 +330,26 @@ $l_marca = 1;
                                                             <td class="text-center">
                                                                 <?php if ($mostrar["precio"] < 1): ?>
                                                                     <div class="flex justify-center gap-2 flex-wrap items-center">
-                                                                        <span class="badge text-bg-danger p-2 text-sm">Bajo pedido</span>
+                                                                        <span class="badge text-bg-danger p-2 fs-6 rounded-5">Agotado</span>
                                                                     </div>
 
                                                                 <?php else: ?>
-                                                                    <div class="dropdown d-flex justify-content-center gap-2 flex-wrap align-items-center mb-2">
-
-                                                                        <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                            <?= "$ ".producto_model::formatnumber("USD",$mostrar["precio"]); ?>
-                                                                        </button>
-                                                                        <ul class="dropdown-menu">
-                                                                            <li class="dropdown-item"> 
-                                                                                <span id="moneda_bs" class=" text-sm badge fw-bold text-bg-primary me-2"> <?= "Bs ".producto_model::formatnumber("VES",$mostrar["precio"] * $tasas_cotizacion['USD']); ?></span> 
-                                                                                <i class="btn bi bi-copy" onclick="copyToClipboard('<?= producto_model::formatnumber('VES',$mostrar['precio'] * $tasas_cotizacion['USD']); ?>')"></i>
-                                                                            </li>
-                                                                            <li class="dropdown-item">
-                                                                                <span id="moneda_euro" class=" text-sm badge fw-bold text-bg-secondary me-2"> <?= "€ ".producto_model::formatnumber("VES",$mostrar["precio"] * $tasas_cotizacion['EURO']); ?></span> 
-                                                                                <i class="btn bi bi-copy" onclick="copyToClipboard('<?= producto_model::formatnumber('VES',$mostrar['precio'] * $tasas_cotizacion['EURO']); ?>')"></i>
-                                                                            </li>
-                                                                            <li class="d-none"> 
-                                                                                <span id="moneda_usdt" class=" text-sm badge text-bg-info me-2"> <?= "USDT ".producto_model::formatnumber("VES",$mostrar["precio"] * ($tasas_cotizacion['USD'] * 1.3 )); ?></span> 
-                                                                                <i class="btn bi bi-copy" onclick="copyToClipboard('<?= producto_model::formatnumber('VES',$mostrar['precio'] * ($tasas_cotizacion['USD'] * 1.3 )); ?>')"></i>
-                                                                            </li>
-                                                                                
-                                                                        </ul>
-                                                                    </div>
+                                                                    <small class="btn btn-outline-success d-flex justify-content-between fw-bold mb-1 p-1" onclick="copyToClipboard('<?= $precio_usd; ?>')">
+                                                                        <span class="fw-bold">USD:</span> <?= $precio_usd ?>
+                                                                        <i class="bi bi-copy"></i>
+                                                                    </small>
+                                                                    <small class="btn btn-outline-primary d-flex justify-content-between fw-bold mb-1 p-1" onclick="copyToClipboard('<?= $precio_bs; ?>')">
+                                                                        <span class="fw-bold">BS:</span> <?= $precio_bs ?>
+                                                                        <i class="bi bi-copy"></i>
+                                                                    </small>
+                                                                    <small class="btn btn-outline-secondary d-flex justify-content-between fw-bold mb-1 p-1" onclick="copyToClipboard('<?= $precio_euro; ?>')">
+                                                                        <span class="fw-bold">Euro:</span> <?=  $precio_euro ?>
+                                                                        <i class="bi bi-copy"></i>
+                                                                    </small>
+                                                                    <small class="d-none text-muted btn ">
+                                                                        <span class="text-danger fw-bold">USDT:</span> <?= $precio_usdt ?>
+                                                                        <i class="btn bi bi-copy" onclick="copyToClipboard('<?= $precio_usdt; ?>')"></i>
+                                                                    </small>
 
                                                                 <?php endif; ?>
                                                             </td>
@@ -508,11 +509,11 @@ $l_marca = 1;
                             <div class="row ">
                                 <div class="col-12 col-md-6 mb-3">
                                     <label class="col-form-label">Nombre del producto <span style="color:#f00;">*</span> </label>
-                                    <input name="producto" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9 ]{3,180}" placeholder="Nombre" required class="mb-3 w-100 form-control">
+                                    <input name="producto" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9 ]{3,180}" placeholder="Nombre" required class="w-100 form-control">
                                 </div>
                                 <div class="col-12 col-md-6 mb-3">
-                                    <label class="col-form-label">Precio (opcional)</label>
-                                    <input name="price" value="0.00" type="number" min="0" step="0.01" placeholder="Precio ($)" class="mb-3 w-100 form-control">
+                                    <label class="col-form-label">Precio <span style="color:#f00;">*</span> </label>
+                                    <input name="price" value="0.00" type="number" min="0" step="0.01" placeholder="Precio ($)" class="w-100 form-control">
                                 </div>
                                 <div class="col-12 mb-3">
                                     <div class="category-selector">
@@ -548,9 +549,9 @@ $l_marca = 1;
             </div>
         </div>
 
-        <div class="modal fade" id="editar_producto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-theme="dark">
+        <div class="modal fade" id="editar_producto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div id="modal_tamano" class="modal-dialog modal-lg modal-dialog-scrollable">
-                <div class="modal-content bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-2xl">
+                <div class="modal-content p-2 rounded-4 border border-secondary shadow-lg">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Modificar Producto</h5>
                         <button id="btnCloseModal" type="button" class="text-white btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -637,10 +638,11 @@ $l_marca = 1;
                 SendFormAjax();
     
             </script>
-            <script src="view/js/carousel.js"></script>
-            <script src="view/js/renderCatalogo.js"></script>
-            <script src="view/js/catalogo.js"></script>
+            <script type="text/javascript" src="js/productos.js"></script>
+            <script type="text/javascript" src="js/carousell.js"></script>
             <script type="text/javascript" src="js/initialApp.js"></script>
+            <script type="text/javascript" src="js/renderCatalogo.js"></script>
+            <script type="text/javascript" src="js/catalogo.js"></script>
 
         </body>
     </html>
