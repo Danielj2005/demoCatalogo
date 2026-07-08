@@ -51,13 +51,13 @@
 <script src="assets/vendor/chart.js/chart.umd.js"></script>
 <script src="assets/vendor/echarts/echarts.min.js"></script>
 <script src="assets/vendor/quill/quill.min.js"></script> -->
-<script src="./vendor/tinymce/tinymce.min.js"></script>
+<!-- <script src="./vendor/tinymce/tinymce.min.js"></script> -->
 
 <!-- Template Main JS File -->
 <script src="./js/nice_admin_scripts/main.js"></script>
 
-<!-- lógica de los modales -->
-<!-- <script src="./js/configModal.js"></script>
+<!-- lógica de los modales
+<script src="./js/configModal.js"></script>
 <script src="./js/modal.js"></script> -->
 <script src="./js/get_url.js"></script>
 
@@ -69,36 +69,8 @@
 <script src="./js/validacion_formularios.js"></script>
 
 <script src="./js/SendForm.js" type="text/javascript"></script> <!-- procesamiento de peticiones CRUD del usuario -->
-<script src="./js/buscar_proveedor.js" type="text/javascript"></script> <!--  script para llamar la información de un proveedor -->
-<script src="./js/buscar_datos_cliente.js" type="text/javascript"></script> <!--  script para llamar la información de un cliente -->
-<script src="./js/procesamiento_de_dinero.js" type="text/javascript"></script> <!-- script para calcular los montos totales de un producto -->
-<script src="./js/select2.min.js" type="text/javascript"></script> <!-- libreria selec2 -->
 <script src="./js/customSwAlert.js" type="text/javascript"></script> <!-- script para import la libreria de alertas toastify -->
 <script src="./js/cerrar_sesion.js" type="text/javascript"></script> <!-- script para cerrar sesion -->
 <script src="./js/toastify.js" type="text/javascript"></script> <!-- script para import la libreria de alertas toastify -->
 
 <script src="./js/añadir_elemento_lista.js"></script>
-
-<script type="text/javascript">
-    // inicializar la libreria Select2 
-    $('.SelectTwo').select2();
-
-    // funcion para eliminar un elemento del html
-    document.addEventListener('DOMContentLoaded', () => {
-        const alertHistoryt = document.querySelectorAll('.alert-history');
-        alertHistoryt.forEach(alert => {
-            alert.addEventListener('click', () => {
-                // alert con toastify library
-                Toastify({
-                    text: ' Este proveedor se encuentra sin un historial de compras.',
-                    className: "bi bi-exclamation-triangle-fill fs-5",
-                    duration: 3000,
-                    style: {
-                        background: "#6c757d",
-                    }
-                }).showToast();
-            });
-        });
-        
-    });
-</script>

@@ -80,12 +80,24 @@ async function copyToClipboard(text) {
                 position: "right", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
                 style: {
-                    background: "linear-gradient(to right, #370863, #870873)",
+                    background: "#198754",
                 }
             }).showToast();
             return true;
         } catch (err) {
             console.warn("Fallo con navigator.clipboard, usando fallback...", err);
+            
+            Toastify({
+                text: "Error al Copiar el texto",
+                duration: 300000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "#dc3545",
+                }
+            }).showToast();
         }
     }
 }

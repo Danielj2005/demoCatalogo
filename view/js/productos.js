@@ -105,74 +105,59 @@ async function getProductos() {
         
         if (isMobile) {
             // En móviles, mejor cambiar la ubicación de la pestaña actual
-            document.getElementById('activos').remove();
-            document.getElementById('inactivos').remove();
+            document.getElementById('titulo_productos').classList.add('fs-4');
+            document.getElementById('tableListProducts').remove();
+            // document.getElementById('inactivos').remove();
 
-            const [active, inactive] = await Promise.all([
-                fetch(`../controller/listaProductos.php`,{
+            const active = await fetch(`../controller/listaProductos.php`,{
                     method: "POST", 
-                    body: JSON.stringify({ UID: 2, state: 1, prices: catizacion })
-                }),
-                fetch(`../controller/listaProductos.php`,{
-                    method: "POST", 
-                    body: JSON.stringify({ UID: 2, state: 0, prices: catizacion })
-                })
-
-            ]);
+                    body: JSON.stringify({ UID: 2, prices: catizacion })
+                });
 
             const productosActivos = await active.text();
-            const productosInactivos = await inactive.text();
+            // const productosInactivos = await inactive.text();
 
             // se crean los elementos contenedores de las cards de los productos
             const cardsProductosActivos = document.createElement('div');
-            const cardsProductosInactivos = document.createElement('div');
+            // const cardsProductosInactivos = document.createElement('div');
             
             // se asignan las clases css de los contenedores de las cards de los productos
-            cardsProductosActivos.className = "grid gap-3 justify-around grid-cols-2 md:grid-cols-4";
-            cardsProductosInactivos.className = "d-none grid gap-3 justify-around grid-cols-2 md:grid-cols-4";
+            cardsProductosActivos.className = "producto-card-container";
+            // cardsProductosInactivos.className = "d-none grid gap-3 justify-around grid-cols-2 md:grid-cols-4";
             
             // se asignan las ID de los contenedores cards de los productos
-            cardsProductosActivos.id = "cards_activos";
-            cardsProductosInactivos.id = "cards_inactivos";
+            cardsProductosActivos.id = "producto-cards";
+            // cardsProductosInactivos.id = "cards_inactivos";
 
             // btn.addEventListener('click', () => filterByCategory(categoria));
             
             cardsProductosActivos.innerHTML = productosActivos; 
-            cardsProductosInactivos.innerHTML = productosInactivos;
+            // cardsProductosInactivos.innerHTML = productosInactivos;
             
-            document.getElementById('main-content').appendChild(cardsProductosActivos);
-            document.getElementById('main-content').appendChild(cardsProductosInactivos);
+            document.getElementById('main-section').appendChild(cardsProductosActivos);
+            // document.getElementById('main-content').appendChild(cardsProductosInactivos);
+
+
             SendFormAjax();
             
         } else {
             // En PC, abrimos pestaña nueva
-            const [active, inactive] = await Promise.all([
-                fetch(`../controller/listaProductos.php`,{
+            const active = await fetch(`../controller/listaProductos.php`,{
                     method: "POST", 
-                    body: JSON.stringify({ UID: 1, state: 1, prices: catizacion })
-                }),
-                fetch(`../controller/listaProductos.php`,{
-                    method: "POST", 
-                    body: JSON.stringify({ UID: 1, state: 0, prices: catizacion })
-                })
-            ]);
+                    body: JSON.stringify({ UID: 1, prices: catizacion })
+                });
             
             const productosActivos = await active.text();
-            const productosInactivos = await inactive.text();
         
             // En PC, abrimos pestaña nueva
     
-            let tbodyProductosActivos = document.querySelector('#activos tbody');
-            let tbodyProductosInactivos = document.querySelector('#inactivos tbody');
+            let tbodyProductosActivos = document.querySelector('#tableListProducts tbody');
     
             tbodyProductosActivos.innerHTML = productosActivos;
-            tbodyProductosInactivos.innerHTML = productosInactivos;
 
             tableProductosActivos = tbodyProductosActivos.innerHTML; // Guardamos el HTML original para futuras actualizaciones
-            tableProductosInactivos = tbodyProductosInactivos.innerHTML; // Guardamos el HTML original para futuras actualizaciones
     
             dataTable("tableActivos");
-            dataTable("tableInactivos");
             SendFormAjax();
         }
 
@@ -196,35 +181,6 @@ async function editingProduct(ID) {
     }
 }
 
-
-
-function changeState () {
-        
-    const btn = document.getElementById('btnChangeState');
-
-    const list_activos = document.getElementById('activos');
-    const list_inactivos = document.getElementById('inactivos');
-
-    if (estado.productState) {
-        btn.textContent = "Ver Productos activos";
-
-        list_activos.classList.add('d-none');
-        list_inactivos.classList.remove('d-none');
-
-        estado.productState = false;
-    }else{
-        btn.textContent = "Ver Productos inactivos";
-
-        list_activos.classList.remove('d-none');
-        list_inactivos.classList.add('d-none');
-
-        estado.productState = true;
-    }
-    
-
-}
-
-
 const detallesProductoById = async (id) => {
     try {
         const modalBody = document.getElementById('modalBodyDetalles');
@@ -236,7 +192,6 @@ const detallesProductoById = async (id) => {
         
         modalBody.innerHTML = detallesProducto;
         inicializarCarrusel();
-
 
     } catch (error) {
         console.error("No se pudo obtener los detallse del producto:", error);
@@ -253,24 +208,13 @@ async function getList_category() {
         const resp = await fetch('../controller/lista_categorias.php');
         const tbody = await resp.text();
 
-        // creamos un element div
-        const div = document.createElement('div');
-        div.className = "table table-responsive";
-        
-        // creamos un element table
-        const table = document.createElement('table');
-        table.className = "table table-striped mb-3 tableListModal";
-        table.id = "tableList";
-
-        table.appendChild(tbody); // insertamos el body de la table
-        div.appendChild(table); // insertamos la table en su contenedor
-
         // insertamos el contenedor en el modal de listas
-        document.getElementById('bodyModalList').innerHTML = div; 
+        document.querySelector('#tableListModal tbody').innerHTML = tbody; 
 
         // inializamos la funcion dataTable
         dataTable("tableListModal");
-
+        SendFormAjax();
+        
     } catch (error) {
         console.error("No se encontraron categorías:");
     }
