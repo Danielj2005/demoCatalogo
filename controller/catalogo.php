@@ -17,13 +17,13 @@ try {
         $offset = ($page - 1) * $per_page;
 
         // total de productos
-        $total_stmt = modeloPrincipal::consultar("SELECT COUNT(*) AS total FROM productos WHERE state = 1");
+        $total_stmt = modeloPrincipal::consultar("SELECT COUNT(*) AS total FROM productos");
         $total_row = mysqli_fetch_assoc($total_stmt);
         $total = intval($total_row['total']);
 
-        $catalogo = mysqli_fetch_all(modeloPrincipal::consultar("SELECT id, nombre, precio, images FROM productos WHERE state = 1 ORDER BY nombre ASC LIMIT $per_page OFFSET $offset")); 
+        $catalogo = mysqli_fetch_all(modeloPrincipal::consultar("SELECT id, nombre, precio, images, estado FROM productos ORDER BY nombre ASC LIMIT $per_page OFFSET $offset")); 
         
-        $stmt_categorias = modeloPrincipal::consultar("SELECT nombre FROM categorias WHERE state = 1 ORDER BY nombre ASC");
+        $stmt_categorias = modeloPrincipal::consultar("SELECT nombre FROM categorias ORDER BY nombre ASC");
         $categorias_lista = array_column(mysqli_fetch_all($stmt_categorias, MYSQLI_ASSOC), 'nombre');
         $productosCategorias = []; 
 
@@ -34,12 +34,14 @@ try {
             $precio = $producto[2];
             $images = explode(',', $producto[3]);
             $images = $images[0];
+            $estado = $producto[4];
 
             $productos[] = [
                 "id" => $id,
                 "nombre" => ucwords(strtolower($nombre)),
                 "precio" => $precio,
-                "images" => $images
+                "images" => $images,
+                "estado" => $estado,
             ];
 
         }

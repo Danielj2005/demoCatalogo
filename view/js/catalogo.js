@@ -1,47 +1,52 @@
 
 const PHONE = "04244189963";
 
-const createCatalogo = (id, nombre, precio, urlImage) =>
-    `<div data-categories="" class="product-card product_${id} group bg-slate-900/40 border border-slate-800 rounded-3xl overflow-hidden hover:border-purple-500/50 transition-all duration-500 animate-slide-up">
-        <div class="relative overflow-hidden cursor-pointer" style="height: 15rem;">
-            <img src="${urlImage}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-            <div class="absolute bottom-0 flex flex-wrap gap-2 items-center">
-                <div class="backdrop-blur-md bg-black/60 border border-white/10 bottom-4 left-4 px-4 py-1 relative rounded-full">
-                    <span class="text-sm font-bold text-white">${precio >= 1.00 ? "$ "+ precio : 'Bajo pedido'}</span>
+const createCatalogo = (id, nombre, precio, urlImage, estado) =>
+        `<div class="fs-4 rounded-4 card p-2 producto-card" data-bs-theme="drk">
+            <div data-categories="" class="product-card product_${id} overflow-hidden">
+                <div class="position-relative overflow-hidden mb-3" style="height: 15rem;">
+                    <img src="${urlImage}" class="w-100 h-100 rounded-bottom-0 rounded-4" alt="Imagen del producto">
+                    <div class="badge_precio_container">
+                        <div class="bg_badge_precio badge border border-white position-relative rounded-5">
+                            <span class="precio_card">${estado == 1 ? "$ "+ precio : 'AGOTADO'}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-start">
+                    <a onclick="detallesProductoById(${id})" class="fs-6 text-muted mb-4 fw-semibold" data-bs-toggle="modal" data-bs-target="#exampleModal">${ nombre.toLowerCase().replace(/\b\w/g, char => char.toUpperCase()) }</a>
+                    
+                </div>
+                <div class="">
+                    <div class="row justify-content-around align-items-cente">
+                        <div class="col-6 mb-2 text-center">
+                            <button onclick="detallesProductoById(${id})" type="button" class="btn_details rounded-5 btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <i class="bi bi-eye"></i>
+                                <span class="small">Ver Detalles</span>
+                            </button> 
+                        </div>
+                        <div class="col-6 mb-2 text-center">
+                            <button id="${id}" producto="${nombre}" onclick="askWhatsApp(${id}, ${precio}, ${estado == 1 ? "$ "+ precio : 'AGOTADO'})" 
+                                type="submit" class="btn btn-success rounded-5">
+                                    <i class="bi bi-whatsapp"></i>
+                                    <span class="small d-non">WhatsApp</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="p-3">
-            <div class="">
-                <button onclick="detallesProductoById(${id})" class="text-sm mb-3 text-white font-semibold" data-bs-toggle="modal" data-bs-target="#exampleModal">${nombre}</button>
-            </div>
-            <div class="row justify-content-center align-items-center">
-                <div class="col-12 mb-3">
-                    <button onclick="detallesProductoById(${id})" type="button" class="btn_details w-full bg-slate-800 hover:bg-purple-600 text-white p-2 rounded-2xl transition-all gap-2 flex items-center justify-center " data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <i class="bi bi-eye text-lg"></i> <span class="d-none d-md-block text-sm font-bold">Ver Detalles</span>
-                    </button> 
-                </div>
-                <div class="col-12 mb-2">
-                    <button onclick="askWhatsApp('${nombre}', ${precio}, ${PHONE})" 
-                        type="submit" class="w-full bg-emerald-800 hover:bg-purple-600 text-white p-2 rounded-3xl transition-all flex items-center justify-center gap-2">
-                            <i class="bi bi-whatsapp text-lg"></i> <span class="d-none d-md-block text-sm font-bold">Consultar por WhatsApp</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>`;
+        </div>`;
 
 
 async function getCatalogo(page = 1) {
     try {
-        const withoutProducts = `<div class="grid grid-cols-1 gap-4"> 
-        <div class="bg-red-700 border border-slate-800 rounded-[2rem] transition-all duration-500 animate-slide-up">
-            <div class="p-4 text-center"> 
-                <i class="bi bi-exclamation-triangle-fill fs-1"></i>
-                <h3 class="h1 text-center text-white font-semibold mb-1 truncate mb-4">En este momento no hay productos disponibles.</h3> 
-            </div> </div> </div>`;
+        const withoutProducts = `<div class="card border border-secondary rounded-4">
+                            <div class="p-4 text-center"> 
+                                <i class="bi bi-exclamation-triangle-fill fs-1"></i>
+                                <h3 class="text-center text-danger fw-semibold mb-1 truncate mb-4">En este momento no hay productos disponibles.</h3> 
+                            </div> 
+                        </div> `;
 
-        const per_page = 16;
+        const per_page = 8;
 
         // Consultamos al PHP que trae los datos de MySQL
         const response = await fetch(`./controller/catalogo.php?page=${page}&per_page=${per_page}`);
@@ -100,15 +105,18 @@ function renderPagination(total, per_page, page) {
 
     const container = document.createElement('div');
     container.id = 'catalog-pagination';
-    container.className = 'w-full flex justify-center items-center gap-2 my-6';
+    container.className = 'w-100 d-flex justify-content-center align-items-center my-5 gap-2 flex-wrap';
 
+    // creacion del botón de paginacion "anterior"
     const prev = document.createElement('button');
-    prev.className = 'btn btn-secondary';
-    prev.textContent = 'Anterior';
+    prev.className = 'btn btn-secondary ps-2 bi bi-arrow-left';
+    prev.id = 'btn-last';
+
+    prev.textContent = '  Anterior';
     prev.disabled = page <= 1;
     prev.addEventListener('click', () => getCatalogo(page - 1));
     container.appendChild(prev);
-
+    
     // crear botones de páginas (limitar rango)
     const maxButtons = 7;
     let start = Math.max(1, page - Math.floor(maxButtons / 2));
@@ -125,16 +133,26 @@ function renderPagination(total, per_page, page) {
         container.appendChild(btn);
     }
 
+    // creacion del botón de paginacion "siguiente"
     const next = document.createElement('button');
-    next.className = 'btn btn-secondary';
+    next.className = 'btn btn-primary';
+    next.id = 'btn-next';
+
+    
     next.textContent = 'Siguiente';
     next.disabled = page >= totalPages;
     next.addEventListener('click', () => getCatalogo(page + 1));
     container.appendChild(next);
+    
+
+    // creacion de icono del botón de paginacion "siguiente"
+    const icon_next = document.createElement('i');
+    icon_next.className = 'ps-1 bi bi-arrow-right';
 
     document.getElementById('main').appendChild(container);
-}
 
+    document.querySelector('#btn-next').appendChild(icon_next);
+}
 
 const detallesProductoById = async (id) => {
     try {

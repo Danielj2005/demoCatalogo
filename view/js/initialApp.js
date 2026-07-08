@@ -99,7 +99,7 @@ async function copyToClipboard(text) {
 window.handleSearch = (val) => {
     
     const searchTerm = val.toLowerCase();
-    const products = document.querySelectorAll('.producto-card'); 
+    const products = document.querySelectorAll('.producto-cards'); 
 
     products.forEach(product => {
         // Busca en todo el texto de la tarjeta (Nombre, descripción, precio, etc.)
@@ -143,5 +143,5 @@ window.filterByCategory = (categoryName) => {
 // Ejecutar al cargar la página o el modal
 document.addEventListener('DOMContentLoaded', () => {
     initCustomSelect();
-    // getProductos();
+    getProductos();
 });
