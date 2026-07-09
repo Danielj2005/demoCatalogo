@@ -8,28 +8,55 @@ const FILTERS = [];
  * Filtra en tiempo real. 
  * No necesita pegarle a la BD en cada tecla porque ya tenemos los datos en state.
  */
-window.handleSearch = (val) => {
+window.handleSearch = async (val) => {
     
     const searchTerm = val.toLowerCase();
-    const products = document.querySelectorAll('.product-card'); 
+    if (val.trim() === "") {
+        // Si el campo de búsqueda está vacío, recargamos el catálogo completo
+        getCatalogo();
+        return;
 
-    products.forEach(product => {
-        // Busca en todo el texto de la tarjeta (Nombre, descripción, precio, etc.)
-        const text = product.innerText.toLowerCase();
-        
-        if (text.includes(searchTerm)) {
-            product.style.display = ""; // Muestra el elemento (usa el display original)
-        } else {
-            product.style.display = "none"; // Oculta el elemento
+    }else{
+
+        try {
+            let response = await fetch(`./controller/catalogo_por_termino.php?termino=${searchTerm}`);
+                
+            if (!response.ok) throw new Error("Error en la petición");
+    
+            const data = await response.json();
+            if (data.status === "success") {
+    
+                // data.productos ya viene como objeto si ajustaste el PHP
+                const productos = typeof data.productos === 'string' ? JSON.parse(data.productos) : data.productos;
+                
+                renderCatalogo(productos);
+    
+            }
+    
+        } catch (error) {
+            console.error("Error al cargar los productos:", error);
         }
-    });
+
+    }
+    // const productos = document.querySelectorAll('.producto-card'); 
+
+    // productos.forEach(product => {
+    //     // Busca en todo el texto de la tarjeta (Nombre, descripción, precio, etc.)
+    //     const text = product.innerText.toLowerCase();
+        
+    //     if (text.includes(searchTerm)) {
+    //         product.style.display = ""; // Muestra el elemento (usa el display original)
+    //     } else {
+    //         product.style.display = "none"; // Oculta el elemento
+    //     }
+    // });
 };
 
 /**
  * Filtra productos por categoría basándose en el texto del botón o data-attributes
  */
 window.filterByCategory = async (categoryName, ID, page = 1) => {
-    const products = document.querySelectorAll('.product-card');
+    const products = document.querySelectorAll('.producto-card');
     const buttons = document.querySelectorAll('.category-btn');
     const filtersActive = document.getElementById('num_filter');
 

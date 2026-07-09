@@ -3,7 +3,7 @@ const PHONE = "04244189963";
 
 const createCatalogo = (id, nombre, precio, urlImage, estado) =>
         `<div class="fs-4 rounded-4 card p-2 producto-card" data-bs-theme="drk">
-            <div data-categories="" class="product-card product_${id} overflow-hidden">
+            <div data-categories="" class=" product_${id} overflow-hidden">
             
                 <div class="position-relative overflow-hidden mb-3" style="height: 15rem;">
                     <img src="${urlImage}" class="w-100 h-100 rounded-bottom-0 rounded-4" alt="Imagen del producto">
@@ -166,6 +166,7 @@ const detallesProductoById = async (id) => {
         
         modalBody.innerHTML = detallesProducto;
 
+        inicializarCarrusel();
     } catch (error) {
         console.error("No se pudo obtener los detallse del producto:", error);
     }

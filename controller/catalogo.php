@@ -12,7 +12,7 @@ try {
     if ($method === 'GET') {
         $multiMoneda = $_GET['multiMoneda'] ?? false;
         $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-        $per_page = isset($_GET['per_page']) ? max(1, intval($_GET['per_page'])) : 15;
+        $per_page = isset($_GET['per_page']) ? max(1, intval($_GET['per_page'])) : 8;
 
         $offset = ($page - 1) * $per_page;
 
@@ -21,7 +21,7 @@ try {
         $total_row = mysqli_fetch_assoc($total_stmt);
         $total = intval($total_row['total']);
 
-        $catalogo = mysqli_fetch_all(modeloPrincipal::consultar("SELECT id, nombre, precio, images, estado FROM productos ORDER BY nombre ASC LIMIT $per_page OFFSET $offset")); 
+        $catalogo = mysqli_fetch_all(modeloPrincipal::consultar("SELECT id, nombre, precio, images, estado FROM productos LIMIT $per_page OFFSET $offset")); 
         
         $stmt_categorias = modeloPrincipal::consultar("SELECT nombre FROM categorias ORDER BY nombre ASC");
         $categorias_lista = array_column(mysqli_fetch_all($stmt_categorias, MYSQLI_ASSOC), 'nombre');

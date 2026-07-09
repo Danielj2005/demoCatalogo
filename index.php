@@ -153,6 +153,7 @@ require_once "./model/productModel.php";
     <script src="view/js/customSwAlert.js"></script>
     <script src="view/js/renderCatalogo.js"></script>
     <script src="view/js/catalogo.js"></script>
+    <script src="view/js/carousell.js"></script>
     <script src="view/js/index.js"></script>
 
     <?php

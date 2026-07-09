@@ -129,7 +129,7 @@ window.handleSearch = (val) => {
  * Filtra productos por categoría basándose en el texto del botón o data-attributes
  */
 window.filterByCategory = (categoryName) => {
-    const products = document.querySelectorAll('.product-card');
+    const products = document.querySelectorAll('.producto-card');
     const buttons = document.querySelectorAll('.category-btn');
 
     // Actualizar estilos visuales de los botones de filtro

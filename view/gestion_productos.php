@@ -456,21 +456,6 @@ $l_marca = 1;
                 </div>
             </div>
 
-            <script type="text/javascript">
-                // mostrar u ocultar el campo de datos del proveedor segun el tipo de compra seleccionado
-                const dataBuyEntries = () => {
-                    const tipoCompra = document.querySelector('#tipo_compra_id').value;
-                    const datProvider = document.querySelector('#datProvider');
-
-                    if (tipoCompra === 'compra_proveedor' && datProvider.classList.contains('d-none')) {
-                        datProvider.classList.remove('d-none');
-                    }else{
-                        datProvider.classList.add('d-none');
-                    }
-                };
-            
-            </script>
-
             <?php 
                 //include_once "./modal/plantillaModalCustom.php"; 
                 

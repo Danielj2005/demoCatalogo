@@ -28,7 +28,7 @@ try {
             // Ruta de la carpeta de imágenes
             $files = explode(",",$products['images']);  
             $quety = $products;
-            
+            $i = 0 ;
         ?>
         
             <div class="col-12 col-md-6 mb-3">
@@ -37,7 +37,7 @@ try {
                     <div class="carousel-track-container">
                         <ul class="carousel-track" id="carouselTrack">
                             <?php foreach ($files as $file) { ?>
-                                <li class="carousel-slide ${active}">
+                                <li class="carousel-slide <?= $i++ == 0 ? 'active' : '' ?>">
                                     <img src="<?= '.'.$file ?? './img/404.png' ?>">
                                 </li>
                             <?php  } ?>
@@ -86,7 +86,7 @@ try {
                     <input name="price" value="<?= $products['precio'] ?>" type="number" min="0" step="0.01" placeholder="Precio ($)" class="w-100 form-control">
                 </div>
                 
-                <div class="rounded-3xl mb-4 bg-white col-12 table-responsive overflow-hidden overflow-x-auto">
+                <div class="rounded-4 mb-4 bg-white col-12 table-responsive overflow-hidden overflow-x-auto">
 
                     <table class="mb-3 no-footer table table-borderless table-group-divider table-hover table-striped">
                         <thead>
@@ -125,7 +125,7 @@ try {
 
                 <div class="col-12 mb-3">
                     <label class="col-form-label">Descripción <span style="color:#f00;">*</span> </label>
-                    <textarea name="desc" value="<?= $products['description'] ?>" placeholder="Descripción del producto..." class="w-100 form-control"><?= $products['description'] ?></textarea>
+                    <textarea readOnly style="height: 10rem;" name="desc" value="<?= mb_convert_encoding($products['description'], 'UTF-8', 'ISO-8859-1') ?>" placeholder="Descripción del producto..." class="w-100 form-control"><?= $products['description'] ?></textarea>
                 </div>
                 
             <?php
