@@ -15,8 +15,8 @@ try {
 
     <tr>
         <td class="col text-center"></td>
-        <td class="col text-start"><?= $cat["nombre"]; ?></td>
-        <td class="col text-start"><?= $cat["descripcion"]; ?></td>
+        <td class="col text-start"> <?= mb_convert_encoding(ucwords(strtolower($cat["nombre"])), 'UTF-8', 'ISO-8859-1'); ?> </td>
+        <td class="col text-start"> <?= mb_convert_encoding(ucwords(strtolower($cat["descripcion"])), 'UTF-8', 'ISO-8859-1'); ?> </td>
         <td scope="row" class="text-center">
             <form action="../controller/categoria_controller.php" method="post" class="SendFormAjax" data-type-form="update_estate" >
                 <input type="hidden" name="UID" value="<?= modeloPrincipal::encryptionId($cat["id"]); ?>">

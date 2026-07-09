@@ -53,7 +53,7 @@ try {
             
             <div class="col-12 col-md-6 mb-3 p-3 text-start border border-secondary rounded-3" style="height: fit-content;">
                 <h3 class="fw-bold mb-4 text-xl">
-                    <?= ucwords(strtolower($quety['nombre'])) ?>
+                    <?= mb_convert_encoding(ucwords(strtolower($quety['nombre'])), 'UTF-8', 'ISO-8859-1') ?>
                 </h3>
                 <div class="mb-2">
                     <div class="bg_badge_precio badge border border-white rounded-5">
@@ -61,7 +61,7 @@ try {
                     </div>
                 </div>
                 
-                <p class="col-12 fw-bold text-muted mb-4 "><?= $quety['description'] ?></p>
+                <p class="col-12 fw-bold text-muted mb-4 "><?= mb_convert_encoding($quety['description'], 'UTF-8', 'ISO-8859-1') ?></p>
             </div>
 
         <?php else:
@@ -78,7 +78,7 @@ try {
                 <input name="id" value="<?= modeloPrincipal::encryptionId($id) ?>" type="hidden">
                 <div class="col-12 col-md-6 mb-3">
                     <label class="">Nombre del producto <span style="color:#f00;">*</span> </label>
-                    <input name="producto" value="<?= $products['nombre'] ?>" placeholder="Nombre" required class="w-100 form-control">
+                    <input name="producto" value="<?= mb_convert_encoding($products['nombre'], 'UTF-8', 'ISO-8859-1') ?>" placeholder="Nombre" required class="w-100 form-control">
                 </div>
 
                 <div class="col-12 col-md-6 mb-3">
@@ -125,7 +125,7 @@ try {
 
                 <div class="col-12 mb-3">
                     <label class="col-form-label">Descripción <span style="color:#f00;">*</span> </label>
-                    <textarea readOnly style="height: 10rem;" name="desc" value="<?= mb_convert_encoding($products['description'], 'UTF-8', 'ISO-8859-1') ?>" placeholder="Descripción del producto..." class="w-100 form-control"><?= $products['description'] ?></textarea>
+                    <textarea readOnly style="height: 10rem;" name="desc" value="<?= mb_convert_encoding($products['description'], 'UTF-8', 'ISO-8859-1') ?>" placeholder="Descripción del producto..." class="w-100 form-control"><?= mb_convert_encoding($products['description'], 'UTF-8', 'ISO-8859-1') ?></textarea>
                 </div>
                 
             <?php

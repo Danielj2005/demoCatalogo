@@ -181,6 +181,7 @@ async function editingProduct(ID) {
     }
 }
 
+
 const detallesProductoById = async (id) => {
     try {
         const modalBody = document.getElementById('modalBodyDetalles');

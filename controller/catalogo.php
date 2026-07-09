@@ -38,7 +38,7 @@ try {
 
             $productos[] = [
                 "id" => $id,
-                "nombre" => ucwords(strtolower($nombre)),
+                "nombre" => mb_convert_encoding(ucwords(strtolower($nombre)), 'UTF-8', 'ISO-8859-1') ,
                 "precio" => $precio,
                 "images" => $images,
                 "estado" => $estado,
@@ -103,11 +103,10 @@ try {
 
             $productos[] = [
                 "id" => $id,
-                "nombre" => ucwords(strtolower($nombre)),
+                "nombre" => mb_convert_encoding(ucwords(strtolower($nombre)), 'UTF-8', 'ISO-8859-1') ,
                 "precio" => $precio,
                 "images" => $images
             ];
-
         }
 
         $data = [
@@ -121,12 +120,8 @@ try {
             "total_pages" => ceil($total / $per_page)
         ];
 
-
         echo json_encode($data);
-
     }
-
-
 } catch(PDOException $e) {
     echo json_encode(["status" => "error", "message" => $e->getMessage()]);
 }

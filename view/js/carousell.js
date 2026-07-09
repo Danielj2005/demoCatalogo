@@ -1,11 +1,13 @@
 
+/** 
 // TODO getInners Esta funcion crea los inners(imagenes dentro del carousel) en base a una url del array original y un estado
 // @param {array} url - array con url de imagenes
 // @param {status} active - estado de la imaagen
-const getInners = (url, active) => `<div class="carousel-item ${active}"> <img src=".${url}" onerror="this.onerror=null; this.src='./img/404.png';" style="width: 35rem; height:35rem; " class="d-block" alt="..."> </div>`;
+*/
 
-const getImgs = (url, active) => `<li class="carousel-slide ${active}">
-<img src=".${url}" onerror="this.onerror=null; this.src='./img/404.png';" onerror="this.src='ruta/imagen-no-encontrada.jpg'"></li>`;
+const getInners = (url, active) => `<div class="carousel-item ${active}"> <img src=".${url ?? '/img/404.png'}" style="width: 35rem; height:35rem; " class="d-block" alt="..."> </div>`;
+
+const getImgs = (url, active) => `<li class="carousel-slide ${active}"> <img src=".${url ?? '/img/404.png'}" ></li>`;
 
 
 /**

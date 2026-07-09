@@ -50,7 +50,7 @@ try {
                         </div>
 
                         <div class="text-start">
-                            <button onclick="detallesProductoById(<?= $mostrar['id'] ?>)" class="btn mb-3 fw-semibold" data-bs-toggle="modal" data-bs-target="#detallesModal"> <?= ucwords(strtolower($mostrar["nombre"])) ?> </button>
+                            <button onclick="detallesProductoById(<?= $mostrar['id'] ?>)" class="btn mb-3 fw-semibold" data-bs-toggle="modal" data-bs-target="#detallesModal"> <?= mb_convert_encoding(ucwords(strtolower($mostrar['nombre'])), 'UTF-8', 'ISO-8859-1') ?> </button>
                         </div>
                         
                         <div class="text-center">

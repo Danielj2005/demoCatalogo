@@ -156,18 +156,7 @@ require_once "./model/productModel.php";
     <script src="view/js/carousell.js"></script>
     <script src="view/js/index.js"></script>
 
-    <?php
-    //include_once "./modal/plantillaModalCustom.php"; 
-
-    // se incluye el footer / pie de pagina a la vista
-    include_once "./view/inc/footer.php";
-    // se incluyen los script de javascript a la vista 
-    // include_once "./inc/scripts_include.php"; 
-
-    //model_user::validar_sesion_activa($id_usuario);
-
-    //config_model::verificar_actualizacion_configuracion(); 
-    ?>
+    <?php include_once "./view/inc/footer.php"; ?>
 </body>
 
 </html>
